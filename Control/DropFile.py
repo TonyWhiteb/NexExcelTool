@@ -11,35 +11,56 @@ class DropFile(FileCtrl.FileCtrl):
         self.Bind(wx.EVT_RIGHT_DOWN, self.OnRightDown)
 
     def GetInfo(self):
-        ##test
-        # pathlist = self.filedropctrl.GetEntryList()
-        # a = pathlist[0][1]
-        ##
-        pathlist = self.GetEntries()
-        def_dict = defaultdict(list)
 
-        self.big_dict = {}
+        pathlist = self.GetEntries()
+        self.col_dict = {}
+
         for k,r in pathlist:
             self.filename = []
             self.filename.append(k)
-            afile_list = []
             sp = {}
+
             os.chdir(r)
-            afile = open(k,"r").readlines()
-            afile_list = afile[0].split('\t')
-            sp = sp.fromkeys(afile_list)
-            m = 1
-            n = 0
-            while m < len(afile):
-                value = []
-                value = afile[m].split('\t')
-                for n in range(len(afile_list)):
-                    if sp[afile_list[n]] ==None:
-                        sp[afile_list[n]] = []
-                    sp[afile_list[n]].append(value[n])
-                m = m + 1
-            self.big_dict[k] = sp
-        return self.big_dict
+            with open(k) as afile:
+                for line in afile:
+                    afile_list = line.split('\t')
+                    sp = sp.fromkeys(afile_list)
+                    break
+                #TODO: Logic of deciding the columns name row
+            self.col_dict[k] = sp
+        return self.col_dict
+        
+#HIGHL: OLD FUNCTION 
+    # def GetInfo(self):
+    #     ##test
+    #     # pathlist = self.filedropctrl.GetEntryList()
+    #     # a = pathlist[0][1]
+    #     ##
+    #     pathlist = self.GetEntries()
+    #     def_dict = defaultdict(list)
+
+    #     self.big_dict = {}
+    #     for k,r in pathlist:
+    #         self.filename = []
+    #         self.filename.append(k)
+    #         afile_list = []
+    #         sp = {}
+    #         os.chdir(r)
+    #         afile = open(k,"r").readlines()
+    #         afile_list = afile[0].split('\t')
+    #         sp = sp.fromkeys(afile_list)
+    #         m = 1
+    #         n = 0
+    #         while m < len(afile):
+    #             value = []
+    #             value = afile[m].split('\t')
+    #             for n in range(len(afile_list)):
+    #                 if sp[afile_list[n]] ==None:
+    #                     sp[afile_list[n]] = []
+    #                 sp[afile_list[n]].append(value[n])
+    #             m = m + 1
+    #         self.big_dict[k] = sp
+    #     return self.big_dict
 
 class DropFilePanel(PanelCtrl.PanelTemp):
     def __init__(self,*args,**kwargs):
