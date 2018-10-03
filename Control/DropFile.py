@@ -62,20 +62,20 @@ class DropFile(FileCtrl.FileCtrl):
     #         self.big_dict[k] = sp
     #     return self.big_dict
 
-class DropFilePanel(PanelCtrl.PanelTemp):
-    def __init__(self,*args,**kwargs):
-        super(DropFile,self).__init__(*args,**kwargs)
+# class DropFilePanel(PanelCtrl.PanelTemp):
+#     def __init__(self,*args,**kwargs):
+#         super(DropFile,self).__init__(*args,**kwargs)
 
-        dfPnl_vertSzr = wx.BoxSizer(wx.VERTICAL)
-        dfPnl_vertSzr.Add(fdcLabel, proportion = 0, flag = wx.EXPAND)
-        dfPnl_vertSzr.Add(self.filesListCtrl, proportion = 1, flag = wx.EXPAND)
-        dfPnl_horzSzr = wx.BoxSizer(wx.HORIZONTAL)
-        dfPnl_horzSzr.Add(dfPnl_vertSzr, proportion =1, flag = wx.EXPAND)
+#         dfPnl_vertSzr = wx.BoxSizer(wx.VERTICAL)
+#         dfPnl_vertSzr.Add(fdcLabel, proportion = 0, flag = wx.EXPAND)
+#         dfPnl_vertSzr.Add(self.filesListCtrl, proportion = 1, flag = wx.EXPAND)
+#         dfPnl_horzSzr = wx.BoxSizer(wx.HORIZONTAL)
+#         dfPnl_horzSzr.Add(dfPnl_vertSzr, proportion =1, flag = wx.EXPAND)
 
-        self.SetSizer(dfPnl_horzSzr)
+#         self.SetSizer(dfPnl_horzSzr)
     
-    def SetCallbackFunc(self, dropCallbackFunc = None):
+#     def SetCallbackFunc(self, dropCallbackFunc = None):
 
-        self.DropFileTarget = self.filesListCtrl
+#         self.DropFileTarget = self.filesListCtrl
 
-        # self.DropFileTarget.SetDropTarget
+#         # self.DropFileTarget.SetDropTarget

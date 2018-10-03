@@ -166,7 +166,7 @@ class FileCtrl(wx.ListCtrl):
         pass
     def GetInfo(self,pathlist,type_list,path_list,name_list):
         # print(self.entriesList)
-        def_dict = defaultdict(list)
+        # def_dict = defaultdict(list)
         excel_dict = {}
         error_dict = {}
         self.col_dict = {}
@@ -178,21 +178,28 @@ class FileCtrl(wx.ListCtrl):
             
             if t == 'errors':
                 
-                afile_list = []
+                # afile_list = []
                 sp = {}
                 
-                afile = open(f,"r").readlines()
-                afile_list = afile[0].split('\t')
-                sp = sp.fromkeys(afile_list)
-                for m in range(1,len(afile)):
-                    value = []
-                    value = afile[m].split('\t')
-                    for n in range(len(afile_list)):
-                        if sp[afile_list[n]] == None:
-                            sp[afile_list[n]] = {m-1:value[n]}
-                        else:
-                            sp[afile_list[n]].update({m-1:value[n]}) 
-                        print(sp)       
+                with open(f) as afile:
+                    for line in afile:
+                        afile_list = line.split('\t')
+                        sp = sp.fromkeys(afile_list)
+                        break
+                    #TODO: Logic of deciding the columns name row
+                #HIGHL: OLD LOGIC
+                # afile = open(f,"r").readlines()
+                # afile_list = afile[0].split('\t')
+                # sp = sp.fromkeys(afile_list)
+                # for m in range(1,len(afile)):
+                #     value = []
+                #     value = afile[m].split('\t')
+                #     for n in range(len(afile_list)):
+                #         if sp[afile_list[n]] == None:
+                #             sp[afile_list[n]] = {m-1:value[n]}
+                #         else:
+                #             sp[afile_list[n]].update({m-1:value[n]}) 
+                #         print(sp)       
                 error_dict[f] = sp
             elif t == 'xlsx':
                 xl = pd.ExcelFile(f)
