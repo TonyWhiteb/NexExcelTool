@@ -40,7 +40,7 @@ class FileCtrl(wx.ListCtrl):
         self.PopupMenu(menu,event.GetPosition())
 
     def OnDeleteRow(self, event):
-f
+
         if(self.currRow >= 0):
 
             assert(self.numEntries == len(self.entriesList))
