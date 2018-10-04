@@ -2,7 +2,7 @@ import sys,os
 import wx
 import pandas as pd
 from pandas import ExcelWriter
-
+import  wx.lib.mixins.listctrl  as  listmix
 from BasicClass import FileCtrl as fc
 
 class NewListFrame(wx.Frame):
@@ -61,10 +61,13 @@ class NewListFrame(wx.Frame):
                         self.list_ctrl.InsertItem(j,k_list[j])
                         self.list_ctrl.SetItem(j,1,key_list[i])
 
-        # self.Autosize()
+        self.Autosize()
         self.filelist = key_list
         self.filedict = self.filedict.fromkeys(key_list)
         return self.list_ctrl
+    def Autosize(self):
+        for colIndex in range(2):
+            self.list_ctrl.SetColumnWidth(colIndex,wx.LIST_AUTOSIZE)
 
     def onSaveFile(self,event):
         pass
@@ -127,3 +130,28 @@ class ButtonPanel(wx.Panel):
 
         self.SetSizer( btnPanel_outerVertSzr )
         self.Layout()
+
+class ListColCtrl(fc.FileCtrl, listmix.CheckListCtrlMixin, listmix.ListCtrlAutoWidthMixin):
+
+    def __init__(self, *args, **kwargs):
+        wx.ListCtrl.__init__(self,*args,**kwargs)
+        listmix.CheckListCtrlMixin.__init__(self)
+        listmix.ListCtrlAutoWidthMixin.__init__(self)
+        # self.setResizeColumn(0)
+
+        self.selected = []
+        self.selected_id = []
+
+        self.Bind(wx.EVT_CHECKBOX, self.OnCheckItem)
+
+    def OnCheckItem(self,index, flag ):
+
+        if flag == True:
+            self.selected.append(self.GetItemText(index))
+            self.selected_id.append(index)
+        else:
+            self.selected.remove(self.GetItemText(index))
+            self.selected_id.remove(index)
+
+    def getSelected_id(self):
+        return  self.selected_id
