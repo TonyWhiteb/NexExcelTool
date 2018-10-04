@@ -18,7 +18,7 @@ class NewListFrame(wx.Frame):
         self.filelist = []
         self.filedict = {}
 
-        self.list_ctrl = fc.FileCtrl(panel, size = (500,304),style = wx.LC_REPORT|wx.BORDER_SUNKEN)
+        self.list_ctrl = ListColCtrl(panel, size = (500,304),style = wx.LC_REPORT|wx.BORDER_SUNKEN)
         self.list_ctrl.InsertColumn(0,'Column Name')
         self.list_ctrl.InsertColumn(1,'File Name')
 
