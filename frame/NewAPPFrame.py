@@ -113,7 +113,7 @@ class AppFrame(wx.Frame):
         
     # def OnListColButton(self,event):
     #     print('Click Successfully!')
-    #     # self.filedropctrl.GetInfo()
+    #     # self.filedropctrl.GetCol()
     #     # print(self.filedropctrl.dropFunc)
     #     print(self.filesAndLinks)
     #     pass
@@ -139,7 +139,7 @@ class AppFrame(wx.Frame):
         num_sql = type_list.count('sql')
 
         if len(type_list) == num_errors + num_xlsx:
-            return self.filedropctrl.GetInfo(pathlist,type_list,path_list,name_list)
+            return self.filedropctrl.GetCol(pathlist,type_list,path_list,name_list)
         else: 
             raise Exception('Only support Excel or Error file!') 
             # TODO: ErrorFrame here!

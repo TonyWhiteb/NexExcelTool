@@ -1,6 +1,6 @@
 import wx
 import sys,os
-import pandas
+import pandas as pd
 from collections import defaultdict
 
 class FileCtrl(wx.ListCtrl):
@@ -164,7 +164,7 @@ class FileCtrl(wx.ListCtrl):
     def ErrorProcess(self):
         
         pass
-    def GetInfo(self,pathlist,type_list,path_list,name_list):
+    def GetCol(self,pathlist,type_list,path_list,name_list):
         # print(self.entriesList)
         # def_dict = defaultdict(list)
         excel_dict = {}

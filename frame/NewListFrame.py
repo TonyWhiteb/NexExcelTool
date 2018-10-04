@@ -22,8 +22,8 @@ class NewListFrame(wx.Frame):
         self.list_ctrl.InsertColumn(0,'Column Name')
         self.list_ctrl.InsertColumn(1,'File Name')
 
-        helpTextTuple = (' '*40, 'These is no columns in this file')
-        self.list_ctrl.Append(helpTextTuple)
+        # helpTextTuple = (' '*40, 'These is no columns in this file')
+        # self.list_ctrl.Append(helpTextTuple)
         self.list_ctrl.SetColumnWidth(0,wx.LIST_AUTOSIZE)
         self.list_ctrl.SetColumnWidth(1,wx.LIST_AUTOSIZE)
 
@@ -61,7 +61,7 @@ class NewListFrame(wx.Frame):
                         self.list_ctrl.InsertItem(j,k_list[j])
                         self.list_ctrl.SetItem(j,1,key_list[i])
 
-        self.Autosize()
+        # self.Autosize()
         self.filelist = key_list
         self.filedict = self.filedict.fromkeys(key_list)
         return self.list_ctrl
