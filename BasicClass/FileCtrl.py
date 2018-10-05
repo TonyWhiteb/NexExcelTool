@@ -28,6 +28,9 @@ class FileCtrl(wx.ListCtrl):
         self.currRow = row
         self.Select(row)
 
+    def GetCurrRow(self):
+        return self.currRow
+#TODO: Get Current Row
     def OnRightDown(self,event): #Right click menu
 
         menu = wx.Menu()
