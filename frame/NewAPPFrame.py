@@ -10,9 +10,10 @@ from collections import defaultdict
 
 class AppFrame(wx.Frame):
 
-    def __init__(self,args,argc,title = 'Demo',file_path = None):
+    def __init__(self,args,argc,title = 'Demo')
+                                        # ,file_path = None):
 
-        self.file_path = file_path
+        # self.file_path = file_path
 
         super(AppFrame,self).__init__(parent = None, id =-1, title = title, size = (800,600))
 
@@ -119,36 +120,46 @@ class AppFrame(wx.Frame):
     #     # print(self.filedropctrl.dropFunc)
     #     print(self.filesAndLinks)
     #     pass
-    def ListCol(self): 
-        pathlist = self.filedropctrl.GetEntries()
-        # listcol_error_meg = ''
-        self.col_dict = {}
-        type_list = []
-        path_list = []
-        name_list = []
-        print(pathlist)
-        for p,f,t in pathlist:
-            assert(t in self.filedropctrl.supportfiletype), "Not support for %s file" %(t)
-            # print(type(p))
-            # print(f)
-            # print(t)
-            path_list.append(p)
-            type_list.append(t)
-            name_list.append(f)
-        # print(path_list,type_list,name_list)   
-        num_errors = type_list.count('errors')
-        num_xlsx = type_list.count('xlsx')
-        num_sql = type_list.count('sql')
+    def ListCol(self, path, name):
+        self.file_path = path
+        pass
+    #HIGHL: OLD ListCol Logic
+    # def ListCol(self): 
+    #     pathlist = self.filedropctrl.GetEntries()
+    #     # listcol_error_meg = ''
+    #     self.col_dict = {}
+    #     type_list = []
+    #     path_list = []
+    #     name_list = []
+    #     print(pathlist)
+    #     for p,f,t in pathlist:
+    #         assert(t in self.filedropctrl.supportfiletype), "Not support for %s file" %(t)
+    #         # print(type(p))
+    #         # print(f)
+    #         # print(t)
+    #         path_list.append(p)
+    #         type_list.append(t)
+    #         name_list.append(f)
+    #     # print(path_list,type_list,name_list)   
+    #     num_errors = type_list.count('errors')
+    #     num_xlsx = type_list.count('xlsx')
+    #     num_sql = type_list.count('sql')
 
-        if len(type_list) == num_errors + num_xlsx:
-            return self.filedropctrl.GetCol(pathlist,type_list,path_list,name_list)
-        else: 
-            raise Exception('Only support Excel or Error file!') 
+    #     if len(type_list) == num_errors + num_xlsx:
+    #         return self.filedropctrl.GetCol(pathlist,type_list,path_list,name_list)
+    #     else: 
+    #         raise Exception('Only support Excel or Error file!') 
             # TODO: ErrorFrame here!
     def OnListColButton(self, event):
         # print(self.selected_id)
+        assert(self.filedropctrl.GetCurrRow() != None), "You should select one row to continue" 
+        #TODO: Create a error message
+
+        select_path = self.filedropctrl.GetItemText(self.filedropctrl.GetCurrRow(),col = 0)
+        select_name = self.filedropctrl.GetItemText(self.filedropctrl.GetCurrRow(),col = 1)
         print(self.filedropctrl.GetCurrRow())
-        col_dict = self.ListCol()
+        print(self.filedropctrl.GetItemText(self.filedropctrl.GetCurrRow()))
+        col_dict = self.ListCol(select_path,select_name)
         ListCol_frame = NLF.NewListFrame(col_dict,self.file_path)
         list_ctrl = ListCol_frame.ListColInfo(col_dict)
         ListCol_frame.Show()
