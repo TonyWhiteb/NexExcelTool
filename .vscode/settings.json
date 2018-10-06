@@ -1,2 +1,9 @@
 {
+    "python.venvFolders": [
+        "envs",
+        ".pyenv",
+        ".direnv",
+        ".vevns"
+    ],
+    "python.pythonPath": "C:\\Users\\tonyt\\Desktop\\project\\NexExcelTool\\.venvs\\NexExcelTool-1Wy4Y0Vx\\Scripts\\python.exe"
 }

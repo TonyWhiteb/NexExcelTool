@@ -17,9 +17,11 @@ class AppFrame(wx.Frame):
         super(AppFrame,self).__init__(parent = None, id =-1, title = title, size = (800,600))
 
         self.filesAndLinks = list()
-        self.no_resize = wx.DEFAULT_FRAME_STYLE & ~ (wx.RESIZE_BORDER | 
-                                                # wx.RESIZE_BOX | 
-                                                wx.MAXIMIZE_BOX)
+         
+        
+        # self.no_resize = wx.DEFAULT_FRAME_STYLE & ~ (wx.RESIZE_BORDER | 
+        #                                         # wx.RESIZE_BOX | 
+        #                                         wx.MAXIMIZE_BOX)
 
         self.SetBackgroundColour(wx.WHITE)
         panel = wx.Panel(self,-1)
@@ -44,7 +46,7 @@ class AppFrame(wx.Frame):
         self.filedropctrl.SetColumnWidth(1, wx.LIST_AUTOSIZE)
 
         onButtonHandlers = self.OnListColButton
-        self.buttonpnl = ButtonPanel(panel,onButtonHandlers= onButtonHandlers,size = (-1,100),style= self.no_resize)
+        self.buttonpnl = ButtonPanel(panel,onButtonHandlers= onButtonHandlers,size = (-1,100))
         # self.buttonpnl.SetAutoLayout(True) 
         # self.buttonpnl.SetSize(wx.Size(300,400)) 
         # style = self.buttonpnl.GetWindowStyle()
@@ -144,6 +146,8 @@ class AppFrame(wx.Frame):
             raise Exception('Only support Excel or Error file!') 
             # TODO: ErrorFrame here!
     def OnListColButton(self, event):
+        # print(self.selected_id)
+        print(self.filedropctrl.GetCurrRow())
         col_dict = self.ListCol()
         ListCol_frame = NLF.NewListFrame(col_dict,self.file_path)
         list_ctrl = ListCol_frame.ListColInfo(col_dict)
