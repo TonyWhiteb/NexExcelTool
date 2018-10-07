@@ -162,58 +162,77 @@ class FileCtrl(wx.ListCtrl):
         reasonableWid = min( firstColMaxWid, firstColActualWid )
         self.SetColumnWidth( firstColIndex, reasonableWid )
     def GetEntries(self):
-        print(self.entriesList)
+        # print(self.entriesList)
         return self.entriesList
     def ErrorProcess(self):
         
         pass
-    def GetCol(self,pathlist,type_list,path_list,name_list):
-        # print(self.entriesList)
-        # def_dict = defaultdict(list)
-        excel_dict = {}
-        error_dict = {}
-        self.col_dict = {}
-        for p,f,t in pathlist:
-            assert(t in self.supportfiletype), "Not support for %s file" %(t)
-            # self.filename = []
-            # self.filename.append(f)
-            os.chdir(p)
-            
-            if t == 'errors':
-                
-                # afile_list = []
-                sp = {}
-                
-                with open(f) as afile:
-                    for line in afile:
-                        afile_list = line.split('\t')
-                        sp = sp.fromkeys(afile_list)
-                        break
-                    #TODO: Logic of deciding the columns name row
-                #HIGHL: OLD LOGIC
-                # afile = open(f,"r").readlines()
-                # afile_list = afile[0].split('\t')
-                # sp = sp.fromkeys(afile_list)
-                # for m in range(1,len(afile)):
-                #     value = []
-                #     value = afile[m].split('\t')
-                #     for n in range(len(afile_list)):
-                #         if sp[afile_list[n]] == None:
-                #             sp[afile_list[n]] = {m-1:value[n]}
-                #         else:
-                #             sp[afile_list[n]].update({m-1:value[n]}) 
-                #         print(sp)       
-                error_dict[f] = sp
-            elif t == 'xlsx':
-                xl = pd.ExcelFile(f)
-                sn = xl.sheet_names
-                df = {}
-                col = {}
-                df = xl.parse(sn[0])
-                excel_dict[f] = df.to_dict()  
-        
-        self.col_dict = error_dict.copy()
-        self.col_dict.update(excel_dict)
 
-        return self.col_dict
+    def GetCol(self, path, name, selelct_type):
+        os.chdir(path)
+        col_dict ={}
+        if selelct_type == 'error':
+            sp = {}
+
+            with open(name) as afile:
+                for line in afile:
+                    afile_list = line.split('\t')
+                    sp = sp.fromkeys(afile_list)
+                    break #TODO: Check if the first line is col info
+            
+        #TODO: EXCEL LOGIC
+        col_dict[name] = sp
+        return col_dict
+
+    
+    #TODO: OLD GETCOL LOGIC
+    # def GetCol(self,pathlist,type_list,path_list,name_list):
+    #     # print(self.entriesList)
+    #     # def_dict = defaultdict(list)
+    #     excel_dict = {}
+    #     error_dict = {}
+    #     self.col_dict = {}
+    #     for p,f,t in pathlist:
+    #         assert(t in self.supportfiletype), "Not support for %s file" %(t)
+    #         # self.filename = []
+    #         # self.filename.append(f)
+    #         os.chdir(p)
+            
+    #         if t == 'errors':
+                
+    #             # afile_list = []
+    #             sp = {}
+                
+    #             with open(f) as afile:
+    #                 for line in afile:
+    #                     afile_list = line.split('\t')
+    #                     sp = sp.fromkeys(afile_list)
+    #                     break
+    #                 #TODO: Logic of deciding the columns name row
+    #             #HIGHL: OLD LOGIC
+    #             # afile = open(f,"r").readlines()
+    #             # afile_list = afile[0].split('\t')
+    #             # sp = sp.fromkeys(afile_list)
+    #             # for m in range(1,len(afile)):
+    #             #     value = []
+    #             #     value = afile[m].split('\t')
+    #             #     for n in range(len(afile_list)):
+    #             #         if sp[afile_list[n]] == None:
+    #             #             sp[afile_list[n]] = {m-1:value[n]}
+    #             #         else:
+    #             #             sp[afile_list[n]].update({m-1:value[n]}) 
+    #             #         print(sp)       
+    #             error_dict[f] = sp
+    #         elif t == 'xlsx':
+    #             xl = pd.ExcelFile(f)
+    #             sn = xl.sheet_names
+    #             df = {}
+    #             col = {}
+    #             df = xl.parse(sn[0])
+    #             excel_dict[f] = df.to_dict()  
+        
+    #     self.col_dict = error_dict.copy()
+    #     self.col_dict.update(excel_dict)
+
+    #     return self.col_dict
 

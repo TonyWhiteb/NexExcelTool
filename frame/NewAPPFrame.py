@@ -10,10 +10,10 @@ from collections import defaultdict
 
 class AppFrame(wx.Frame):
 
-    def __init__(self,args,argc,title = 'Demo')
-                                        # ,file_path = None):
+    def __init__(self,args,argc,title = 'Demo'
+                                        ,file_path = None):
 
-        # self.file_path = file_path
+        self.file_path = file_path
 
         super(AppFrame,self).__init__(parent = None, id =-1, title = title, size = (800,600))
 
@@ -120,9 +120,9 @@ class AppFrame(wx.Frame):
     #     # print(self.filedropctrl.dropFunc)
     #     print(self.filesAndLinks)
     #     pass
-    def ListCol(self, path, name):
-        self.file_path = path
-        pass
+    # def ListCol(self, path, name, select_type):
+    #     return self.filedropctrl.GetCol()
+        
     #HIGHL: OLD ListCol Logic
     # def ListCol(self): 
     #     pathlist = self.filedropctrl.GetEntries()
@@ -157,9 +157,10 @@ class AppFrame(wx.Frame):
 
         select_path = self.filedropctrl.GetItemText(self.filedropctrl.GetCurrRow(),col = 0)
         select_name = self.filedropctrl.GetItemText(self.filedropctrl.GetCurrRow(),col = 1)
+        select_type = self.filedropctrl.GetItemText(self.filedropctrl.GetCurrRow(),col = 2)
         print(self.filedropctrl.GetCurrRow())
         print(self.filedropctrl.GetItemText(self.filedropctrl.GetCurrRow()))
-        col_dict = self.ListCol(select_path,select_name)
+        col_dict = self.filedropctrl.GetCol(select_path,select_name,select_type)
         ListCol_frame = NLF.NewListFrame(col_dict,self.file_path)
         list_ctrl = ListCol_frame.ListColInfo(col_dict)
         ListCol_frame.Show()
