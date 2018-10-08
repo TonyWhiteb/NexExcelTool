@@ -44,27 +44,29 @@ class NewListFrame(wx.Frame):
         panel.Fit()
         self.Centre()
         self.Show()
-
     def ListColInfo(self,col_dict):
-        key_list = []
-        value_list =[]
+        print(col_dict)
+        pass
+    # def ListColInfo(self,col_dict):
+    #     key_list = []
+    #     value_list =[]
 
-        for key, value in col_dict.items():
-            key_list.append(key)
-            value_list.append(value)
-        if len(key_list) == len(value_list):
-            for i in range(len(key_list)):
-                for k in value_list[i]:
-                    k_list =[]
-                    k_list.append(k)
-                    for j in range(len(k_list)) :
-                        self.list_ctrl.InsertItem(j,k_list[j])
-                        self.list_ctrl.SetItem(j,1,key_list[i])
+    #     for key, value in col_dict.items():
+    #         key_list.append(key)
+    #         value_list.append(value)
+    #     if len(key_list) == len(value_list):
+    #         for i in range(len(key_list)):
+    #             for k in value_list[i]:
+    #                 k_list =[]
+    #                 k_list.append(k)
+    #                 for j in range(len(k_list)) :
+    #                     self.list_ctrl.InsertItem(j,k_list[j])
+    #                     self.list_ctrl.SetItem(j,1,key_list[i])
 
-        self.Autosize()
-        self.filelist = key_list
-        self.filedict = self.filedict.fromkeys(key_list)
-        return self.list_ctrl
+    #     self.Autosize()
+    #     self.filelist = key_list
+    #     self.filedict = self.filedict.fromkeys(key_list)
+    #     return self.list_ctrl
     def Autosize(self):
         for colIndex in range(2):
             self.list_ctrl.SetColumnWidth(colIndex,wx.LIST_AUTOSIZE)

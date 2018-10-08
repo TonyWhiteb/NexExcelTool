@@ -179,9 +179,9 @@ class FileCtrl(wx.ListCtrl):
                     afile_list = line.split('\t')
                     sp = sp.fromkeys(afile_list)
                     break #TODO: Check if the first line is col info
-            
+            col_dict[name] = sp
         #TODO: EXCEL LOGIC
-        col_dict[name] = sp
+        
         return col_dict
 
     
