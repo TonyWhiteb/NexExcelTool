@@ -7,13 +7,13 @@ from BasicClass import FileCtrl as fc
 
 class NewListFrame(wx.Frame):
 
-    def __init__(self,col_dict,file_path):
+    def __init__(self,col_info,file_path):
 
         wx.Frame.__init__(self,None,wx.ID_ANY,"List Columns",pos= (700,300))
         self.SetClientSize((650,400))
         panel = wx.Panel(self,wx.ID_ANY)
 
-        self.col_dict = col_dict
+        # self.col_dict = col_info
         self.file_path = file_path
         self.filelist = []
         self.filedict = {}
@@ -44,9 +44,18 @@ class NewListFrame(wx.Frame):
         panel.Fit()
         self.Centre()
         self.Show()
-    def ListColInfo(self,col_dict):
-        print(col_dict)
-        pass
+    def ListColInfo(self,col_info):
+        file_name = col_info[0]
+        col_dict = {}
+        col_dict = col_info[1]
+        col_no = 0
+        for k in col_dict:
+            self.list_ctrl.InsertItem(col_no,k)
+            self.list_ctrl.SetItem(col_no,1,file_name)
+            col_no = col_no + 1
+        self.Autosize()
+            
+        # pass
     # def ListColInfo(self,col_dict):
     #     key_list = []
     #     value_list =[]

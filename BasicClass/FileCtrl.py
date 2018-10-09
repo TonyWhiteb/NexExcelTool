@@ -168,21 +168,28 @@ class FileCtrl(wx.ListCtrl):
         
         pass
 
-    def GetCol(self, path, name, selelct_type):
-        os.chdir(path)
-        col_dict ={}
-        if selelct_type == 'error':
-            sp = {}
-
-            with open(name) as afile:
+    def GetCol(self, path, name, select_type):
+        
+        _path = path
+        _name = name
+        _select_type = select_type
+        os.chdir(_path)
+        
+        if _select_type == 'errors':
+            # sp = {}
+            col_info = [_name]
+            with open(_name) as afile:
                 for line in afile:
+                    sp = {}
                     afile_list = line.split('\t')
                     sp = sp.fromkeys(afile_list)
+                    # print(sp)
                     break #TODO: Check if the first line is col info
-            col_dict[name] = sp
+            col_info.append(sp)
+            return col_info
         #TODO: EXCEL LOGIC
         
-        return col_dict
+        
 
     
     #TODO: OLD GETCOL LOGIC

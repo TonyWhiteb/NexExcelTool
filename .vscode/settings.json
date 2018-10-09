@@ -5,5 +5,6 @@
         ".direnv",
         ".vevns"
     ],
-    "python.pythonPath": "C:\\Users\\tonyt\\Desktop\\project\\NexExcelTool\\.venvs\\NexExcelTool-1Wy4Y0Vx\\Scripts\\python.exe"
+    "python.pythonPath": "E:\\NexExcelTool\\.venvs\\NexExcelTool-NC7sI1cM\\Scripts\\python.exe",
+    // "python.pythonPath": "C:\\Users\\tonyt\\Desktop\\project\\NexExcelTool\\.venvs\\NexExcelTool-1Wy4Y0Vx\\Scripts\\python.exe"
 }

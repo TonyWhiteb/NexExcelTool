@@ -127,7 +127,7 @@ class AppFrame(wx.Frame):
     # def ListCol(self): 
     #     pathlist = self.filedropctrl.GetEntries()
     #     # listcol_error_meg = ''
-    #     self.col_dict = {}
+    #     self.col_info = {}
     #     type_list = []
     #     path_list = []
     #     name_list = []
@@ -158,11 +158,12 @@ class AppFrame(wx.Frame):
         select_path = self.filedropctrl.GetItemText(self.filedropctrl.GetCurrRow(),col = 0)
         select_name = self.filedropctrl.GetItemText(self.filedropctrl.GetCurrRow(),col = 1)
         select_type = self.filedropctrl.GetItemText(self.filedropctrl.GetCurrRow(),col = 2)
-        print(self.filedropctrl.GetCurrRow())
-        print(self.filedropctrl.GetItemText(self.filedropctrl.GetCurrRow()))
-        col_dict = self.filedropctrl.GetCol(select_path,select_name,select_type)
-        ListCol_frame = NLF.NewListFrame(col_dict,self.file_path)
-        list_ctrl = ListCol_frame.ListColInfo(col_dict)
+        # print(self.filedropctrl.GetCurrRow())
+        # print(self.filedropctrl.GetItemText(self.filedropctrl.GetCurrRow()))
+        # print(select_name,select_path,select_type)
+        col_info = self.filedropctrl.GetCol(select_path,select_name,select_type)
+        ListCol_frame = NLF.NewListFrame(col_info,self.file_path)
+        list_ctrl = ListCol_frame.ListColInfo(col_info)
         ListCol_frame.Show()
 
 class ButtonPanel(wx.Panel):
