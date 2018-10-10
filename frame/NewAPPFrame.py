@@ -30,8 +30,8 @@ class AppFrame(wx.Frame):
 
         # wx.StaticText(self, -1,"Any files and links",(10,1))
         self.filedropctrl = FC.FileCtrl(panel,size = (550,300),style = wx.LC_REPORT|wx.BORDER_SUNKEN)
-        self.filedropctrl.InsertColumn(0,'File or Link Name')
-        self.filedropctrl.InsertColumn(1,'Parent Path')
+        self.filedropctrl.InsertColumn(0,'File Path')
+        self.filedropctrl.InsertColumn(1,'File Name')
         self.filedropctrl.InsertColumn(2,'File Type')
         self.filesDropTarget = self.filedropctrl
 
@@ -96,7 +96,7 @@ class AppFrame(wx.Frame):
                 _ParentPath, basename = os.path.split( aPath )
                 namelist = basename.split('.')
                 afiletype = namelist[len(namelist)-1]
-                textTuple = (commonPathname, basename, afiletype)
+                textTuple = (commonPathname, basename, afiletype+' '*10)
                 dropTarget.WriteTextTuple( textTuple )
         # for aPath in pathList:
         #     # print('here! 1')
