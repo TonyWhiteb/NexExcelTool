@@ -96,75 +96,36 @@ class AppFrame(wx.Frame):
                 _ParentPath, basename = os.path.split( aPath )
                 namelist = basename.split('.')
                 afiletype = namelist[len(namelist)-1]
-                textTuple = (commonPathname, basename, afiletype)
+                textTuple = (commonPathname, basename, afiletype + ' '*10)
                 dropTarget.WriteTextTuple( textTuple )
-        # for aPath in pathList:
-        #     # print('here! 1')
-        #     if not os.path.isdir(aPath):
-        #         # print(self.filesAndLinks)
-        #         if (aPath not in self.filesAndLinks):
-        #             self.filesAndLinks.append(aPath)
-        #             # print('here! 3')
-        #         _ParentPath, basename = os.path.split(aPath)
-        #         textTuple = (basename,commonPathname)
-        #         dropTarget.WriteTextTuple( textTuple )
-                    # print('here! 4')
-        # print(self.filesAndLinks)
-                    # self.filedropctrl.WriteTextTuple(textTuple)
 
-    # def FrameStyle(self):
-        
-    # def OnListColButton(self,event):
-    #     print('Click Successfully!')
-    #     # self.filedropctrl.GetCol()
-    #     # print(self.filedropctrl.dropFunc)
-    #     print(self.filesAndLinks)
-    #     pass
-    # def ListCol(self, path, name, select_type):
-    #     return self.filedropctrl.GetCol()
-        
-    #HIGHL: OLD ListCol Logic
-    # def ListCol(self): 
-    #     pathlist = self.filedropctrl.GetEntries()
-    #     # listcol_error_meg = ''
-    #     self.col_info = {}
-    #     type_list = []
-    #     path_list = []
-    #     name_list = []
-    #     print(pathlist)
-    #     for p,f,t in pathlist:
-    #         assert(t in self.filedropctrl.supportfiletype), "Not support for %s file" %(t)
-    #         # print(type(p))
-    #         # print(f)
-    #         # print(t)
-    #         path_list.append(p)
-    #         type_list.append(t)
-    #         name_list.append(f)
-    #     # print(path_list,type_list,name_list)   
-    #     num_errors = type_list.count('errors')
-    #     num_xlsx = type_list.count('xlsx')
-    #     num_sql = type_list.count('sql')
-
-    #     if len(type_list) == num_errors + num_xlsx:
-    #         return self.filedropctrl.GetCol(pathlist,type_list,path_list,name_list)
-    #     else: 
-    #         raise Exception('Only support Excel or Error file!') 
-            # TODO: ErrorFrame here!
     def OnListColButton(self, event):
         # print(self.selected_id)
-        assert(self.filedropctrl.GetCurrRow() != None), "You should select one row to continue" 
+        # assert(self.filedropctrl.GetCurrRow() != None), "You should select one row to continue" 
         #TODO: Create a error message
 
-        select_path = self.filedropctrl.GetItemText(self.filedropctrl.GetCurrRow(),col = 0)
-        select_name = self.filedropctrl.GetItemText(self.filedropctrl.GetCurrRow(),col = 1)
-        select_type = self.filedropctrl.GetItemText(self.filedropctrl.GetCurrRow(),col = 2)
+        currRow = self.filedropctrl.GetCurrRow()
+        
+        select_path = self.filedropctrl.GetItemText(currRow,col = 0)
+        select_name = self.filedropctrl.GetItemText(currRow,col = 1)
+        select_type = self.filedropctrl.GetItemText(currRow,col = 2)
         # print(self.filedropctrl.GetCurrRow())
         # print(self.filedropctrl.GetItemText(self.filedropctrl.GetCurrRow()))
         # print(select_name,select_path,select_type)
-        col_info = self.filedropctrl.GetCol(select_path,select_name,select_type)
-        ListCol_frame = NLF.NewListFrame(col_info,self.file_path)
-        list_ctrl = ListCol_frame.ListColInfo(col_info)
-        ListCol_frame.Show()
+        try:
+            col_info = self.filedropctrl.GetCol(select_path,select_name,select_type.strip())
+            ListCol_frame = NLF.NewListFrame(col_info,self.file_path)
+            list_ctrl = ListCol_frame.ListColInfo(col_info)
+            ListCol_frame.Show()
+        except TypeError:
+            self.Warn('You should select one row or drag one file at least')
+        except OSError:
+            self.Warn('You should select one row or drag one file at least')
+
+    def Warn(self, message, caption = 'Warning!'):
+        dlg = wx.MessageDialog(self, message, caption, wx.OK | wx.ICON_WARNING)
+        dlg.ShowModal()
+        dlg.Destroy() 
 
 class ButtonPanel(wx.Panel):
 

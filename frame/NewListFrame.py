@@ -19,13 +19,17 @@ class NewListFrame(wx.Frame):
         self.filedict = {}
 
         self.list_ctrl = ListColCtrl(panel, size = (500,304),style = wx.LC_REPORT|wx.BORDER_SUNKEN)
-        self.list_ctrl.InsertColumn(0,'Column Name')
-        self.list_ctrl.InsertColumn(1,'File Name')
+
+        self.list_ctrl.InsertColumn(0,'Column Number',width=wx.LIST_AUTOSIZE_USEHEADER)
+        self.list_ctrl.InsertColumn(1,'Column Name')
+        self.list_ctrl.InsertColumn(2,'File Name')
+        
 
         # helpTextTuple = (' '*40, 'These is no columns in this file')
         # self.list_ctrl.Append(helpTextTuple)
-        self.list_ctrl.SetColumnWidth(0,wx.LIST_AUTOSIZE)
-        self.list_ctrl.SetColumnWidth(1,wx.LIST_AUTOSIZE)
+        self.list_ctrl.SetColumnWidth(0,wx.LIST_AUTOSIZE_USEHEADER)
+        self.list_ctrl.SetColumnWidth(1,wx.LIST_AUTOSIZE_USEHEADER)
+        self.list_ctrl.SetColumnWidth(2,wx.LIST_AUTOSIZE_USEHEADER)
 
         onButtonHandlers = self.onSaveFile
         self.buttonpnl = ButtonPanel(panel, onButtonHandlers=onButtonHandlers)
@@ -50,8 +54,9 @@ class NewListFrame(wx.Frame):
         col_dict = col_info[1]
         col_no = 0
         for k in col_dict:
-            self.list_ctrl.InsertItem(col_no,k)
-            self.list_ctrl.SetItem(col_no,1,file_name)
+            self.list_ctrl.InsertItem(col_no,str(col_no+1)+' '*30)
+            self.list_ctrl.SetItem(col_no,1,k)
+            self.list_ctrl.SetItem(col_no,2,file_name)
             col_no = col_no + 1
         self.Autosize()
             
