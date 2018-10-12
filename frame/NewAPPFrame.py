@@ -24,8 +24,9 @@ class AppFrame(wx.Frame):
         self.filedropctrl.InsertColumn(0,'File Path')
         self.filedropctrl.InsertColumn(1,'File Name')
         self.filedropctrl.InsertColumn(2,'File Type')
+        self.filedropctrl.InsertColumn(3,'Number of Columns')
 
-        helpTextTuple = (' '*40, 'Drop Files and Folders Here',' '*30)
+        helpTextTuple = (' '*40, 'Drop Files and Folders Here',' '*30,' '*40)
         self.filedropctrl.Append(helpTextTuple)
 
         self.filedropctrl.SetDropTarget(DT.DropTarget(self.filedropctrl))
@@ -33,6 +34,7 @@ class AppFrame(wx.Frame):
         self.filedropctrl.SetColumnWidth(0, wx.LIST_AUTOSIZE)
         self.filedropctrl.SetColumnWidth(1, wx.LIST_AUTOSIZE)
         self.filedropctrl.SetColumnWidth(2, wx.LIST_AUTOSIZE)
+        self.filedropctrl.SetColumnWidth(3, wx.LIST_AUTOSIZE)
 
 
 
@@ -64,6 +66,8 @@ class AppFrame(wx.Frame):
         leafFolderList = filenameDropDict[ 'basenameList' ]     # leaf folders, not basenames !
         commonPathname = filenameDropDict[ 'pathname' ]
         filetype = filenameDropDict['filetype']
+        # col_info = filenameDropDict['NoCol']
+
 
         for aPath in pathList :     # May include folders.
 
@@ -76,6 +80,7 @@ class AppFrame(wx.Frame):
                 _ParentPath, basename = os.path.split( aPath ) #basename is file name
                 namelist = basename.split('.')
                 afiletype = namelist[len(namelist)-1]
+                # col_no = len(col_info.keys())
                 textTuple = (commonPathname, basename, afiletype + ' '*10)
                 dropTarget.WriteTextTuple( textTuple )
 
