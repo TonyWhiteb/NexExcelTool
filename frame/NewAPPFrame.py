@@ -66,6 +66,7 @@ class AppFrame(wx.Frame):
         leafFolderList = filenameDropDict[ 'basenameList' ]     # leaf folders, not basenames !
         commonPathname = filenameDropDict[ 'pathname' ]
         filetype = filenameDropDict['filetype']
+        col_info = filenameDropDict['col_info']
         # col_info = filenameDropDict['NoCol']
 
 

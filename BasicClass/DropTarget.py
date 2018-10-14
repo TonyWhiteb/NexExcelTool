@@ -45,7 +45,7 @@ class DropTarget(wx.FileDropTarget):
                         afile_list = line.split('\t')
                         sp = sp.fromkeys(afile_list)
                         break
-                col_info.append(sp)
+                col_info[aBasename] = sp
 
 
 
