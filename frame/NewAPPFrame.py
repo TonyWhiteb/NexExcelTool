@@ -65,25 +65,10 @@ class AppFrame(wx.Frame):
         pathList = filenameDropDict[ 'pathList' ]
         leafFolderList = filenameDropDict[ 'basenameList' ]     # leaf folders, not basenames !
         commonPathname = filenameDropDict[ 'pathname' ]
-        filetype = filenameDropDict['filetype']
+        filetype_list = filenameDropDict['filetype']
         col_info = filenameDropDict['col_info']
-        # col_info = filenameDropDict['NoCol']
-
-
-        for aPath in pathList :     # May include folders.
-
-            # Keep just files and link files.
-            if not os.path.isdir( aPath ) :
-
-                if (aPath not in self.filesAndLinks) :
-                    self.filesAndLinks.append( aPath )
-
-                _ParentPath, basename = os.path.split( aPath ) #basename is file name
-                namelist = basename.split('.')
-                afiletype = namelist[len(namelist)-1]
-                # col_no = len(col_info.keys())
-                textTuple = (commonPathname, basename, afiletype + ' '*10)
-                dropTarget.WriteTextTuple( textTuple )
+        textTuple = (commonPathname,leafFolderList,filetype_list,len(col_info))
+        dropTarget.WriteTextTuple(textTuple)
 
     def OnListColButton(self, event):
        

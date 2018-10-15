@@ -14,7 +14,7 @@ class FileCtrl(wx.ListCtrl):
         self.entriesList = []
         self.numEntries = 0
         self.filename = []
-        self.numCols = 3
+        self.numCols = 4
         self.haveEntries = False
         self.supportfiletype = ['errors','xlsx','sql']
 
@@ -117,7 +117,7 @@ class FileCtrl(wx.ListCtrl):
         assert(len(rowDataTuple) >= self.numCols), 'Given data must have at least %d items.' %(self.numCols)
 
         for idx in range(self.numCols):
-            assert(isinstance(rowDataTuple[idx],(bytes,str))),'One or both data elements are not strings.'
+            assert(isinstance(rowDataTuple[idx],(bytes,str,int))),'One or both data elements are not strings or numbers.'
 
         self.rowDataTupleTruncated = tuple(rowDataTuple[:self.numCols])
         # print(self.numCols)
