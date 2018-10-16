@@ -8,11 +8,18 @@ class DropTarget(wx.FileDropTarget):
         wx.FileDropTarget.__init__(self)
 
     def OnDropFiles(self, xOrd, yOrd, pathList):
-  
+
+        path_list = []
+        basename_list = []
+        filetype_list = []
+        col_dict = {}
         for aPath in pathList :
             pathname, aBasename = os.path.split(aPath)
             namelist = aBasename.split('.')
             filetype = namelist[len(namelist)-1]
+
+            
+
             os.chdir(pathname)
             if filetype == 'errors':
 
@@ -23,15 +30,19 @@ class DropTarget(wx.FileDropTarget):
                         afile_list = line.split('\t') 
                         col_info = col_info.fromkeys(afile_list)
                         break
-
+                        
+            path_list.append(pathname)
+            basename_list.append(aBasename)
+            filetype_list.append(filetype)
+            col_dict[aBasename] = col_info
 
         filenameDropDict = {}
         filenameDropDict['coord'] = (xOrd,yOrd)
         filenameDropDict['pathList'] = pathList
-        filenameDropDict['pathname'] = pathname
-        filenameDropDict['basenameList'] = aBasename
-        filenameDropDict['filetype'] = filetype
-        filenameDropDict['col_info'] = col_info
+        filenameDropDict['pathname'] = path_list
+        filenameDropDict['basenameList'] = basename_list
+        filenameDropDict['filetype'] = filetype_list
+        filenameDropDict['col_info'] = col_dict
 
         if (hasattr( self.targetControl, 'dropFunc' ))  and  \
            (self.targetControl.dropFunc != None) :

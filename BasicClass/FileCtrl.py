@@ -140,11 +140,9 @@ class FileCtrl(wx.ListCtrl):
         for colIndex in [1,2,3]:
             col_width = self.GetColumnWidth(colIndex)
             self.SetColumnWidth( colIndex, wx.LIST_AUTOSIZE )
-            print(self.GetClientSize())
             ColMaxWid = self.GetClientSize()[ 0 ] / 2      # Half the avaiable width.
                           # Avoid the use of "Magic Numbers".
             input_width = self.GetColumnWidth( colIndex )
-            print(input_width)
             reasonableWid = max( col_width, input_width )
             finalWid = min(reasonableWid,ColMaxWid)
             self.SetColumnWidth( colIndex, reasonableWid )

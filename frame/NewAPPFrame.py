@@ -65,12 +65,19 @@ class AppFrame(wx.Frame):
         
         dropCoord = filenameDropDict[ 'coord' ]                 # Not used as yet.
         pathList = filenameDropDict[ 'pathList' ]
-        leafFolderList = filenameDropDict[ 'basenameList' ]     # leaf folders, not basenames !
-        commonPathname = filenameDropDict[ 'pathname' ]
+        basename_list = filenameDropDict[ 'basenameList' ]     # leaf folders, not basenames !
+        pathname_list = filenameDropDict[ 'pathname' ]
         filetype_list = filenameDropDict['filetype']
-        col_info = filenameDropDict['col_info']
-        textTuple = (commonPathname,leafFolderList,filetype_list ,len(col_info))
-        dropTarget.WriteTextTuple(textTuple)
+        col_dict = filenameDropDict['col_info']
+
+        for index in range(len(basename_list)):
+            basename = basename_list[index]
+            pathname = pathname_list[index]
+            filetype = filetype_list[index]
+            total_col = len(col_dict[basename])
+            textTuple = (pathname,basename,filetype,total_col)
+            dropTarget.WriteTextTuple(textTuple)
+            
 
     def OnListColButton(self, event):
        
