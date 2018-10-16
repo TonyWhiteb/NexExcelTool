@@ -26,7 +26,8 @@ class AppFrame(wx.Frame):
         self.filedropctrl.InsertColumn(2,'File Type')
         self.filedropctrl.InsertColumn(3,'Number of Columns')
 
-        helpTextTuple = (' '*40, 'Drop Files and Folders Here',' '*30,' '*40)
+        helpTextTuple = (' '*40, 'Drop Files and Folders Here',' '*len('File Type')*2
+                        ,' '*len('Number of Columns  ')*2)
         self.filedropctrl.Append(helpTextTuple)
 
         self.filedropctrl.SetDropTarget(DT.DropTarget(self.filedropctrl))
@@ -56,7 +57,8 @@ class AppFrame(wx.Frame):
         panel.Fit()
         self.Centre()
         self.Show()
-    
+    # def OnColInfo(self,col_info):
+
     def OnFilesDropped(self, filenameDropDict):
        
         dropTarget = self.filedropctrl
@@ -67,7 +69,7 @@ class AppFrame(wx.Frame):
         commonPathname = filenameDropDict[ 'pathname' ]
         filetype_list = filenameDropDict['filetype']
         col_info = filenameDropDict['col_info']
-        textTuple = (commonPathname,leafFolderList,filetype_list,len(col_info))
+        textTuple = (commonPathname,leafFolderList,filetype_list ,len(col_info))
         dropTarget.WriteTextTuple(textTuple)
 
     def OnListColButton(self, event):
