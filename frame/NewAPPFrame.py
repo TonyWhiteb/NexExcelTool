@@ -18,6 +18,7 @@ class AppFrame(wx.Frame):
         self.SetBackgroundColour(wx.WHITE)
         self.file_path = file_path
         self.filesAndLinks = list()
+        self.col_dict = {}
         panel = wx.Panel(self,-1)
 
         self.filedropctrl = FC.FileCtrl(panel,size = (550,300),style = wx.LC_REPORT|wx.BORDER_SUNKEN)
@@ -69,7 +70,7 @@ class AppFrame(wx.Frame):
         pathname_list = filenameDropDict[ 'pathname' ]
         filetype_list = filenameDropDict['filetype']
         col_dict = filenameDropDict['col_info']
-
+        self.col_dict.update(col_dict)
         for index in range(len(basename_list)):
             basename = basename_list[index]
             pathname = pathname_list[index]
@@ -77,7 +78,7 @@ class AppFrame(wx.Frame):
             total_col = len(col_dict[basename])
             textTuple = (pathname,basename,filetype,total_col)
             dropTarget.WriteTextTuple(textTuple)
-            
+
 
     def OnListColButton(self, event):
        
@@ -87,8 +88,8 @@ class AppFrame(wx.Frame):
             select_path = self.filedropctrl.GetItemText(currRow,col = 0)
             select_name = self.filedropctrl.GetItemText(currRow,col = 1)
             select_type = self.filedropctrl.GetItemText(currRow,col = 2)
-            col_info = self.filedropctrl.GetCol(select_path,select_name,select_type.strip())
-            ListCol_frame = NLF.NewListFrame(col_info,self.file_path)
+            col_info = self.col_dict[select_name]
+            ListCol_frame = NLF.NewListFrame(select_name,col_info,self.file_path)
             ListCol_frame.Show()
         except TypeError:
             self.Warn('You should select one row or drag one file at least')

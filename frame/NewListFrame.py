@@ -7,13 +7,14 @@ from BasicClass import FileCtrl as fc
 
 class NewListFrame(wx.Frame):
 
-    def __init__(self,col_info,file_path):
+    def __init__(self,filename,col_dict,file_path):
 
         wx.Frame.__init__(self,None,wx.ID_ANY,"List Columns",pos= (700,300))
         self.SetClientSize((650,400))
         panel = wx.Panel(self,wx.ID_ANY)
 
-        # self.col_dict = col_info
+        # self.col_dict = col_dict
+        self.filename = filename
         self.file_path = file_path
         self.filelist = []
         self.filedict = {}
@@ -22,7 +23,7 @@ class NewListFrame(wx.Frame):
         self.list_ctrl.InsertColumn(0,'Column Number',width=wx.LIST_AUTOSIZE_USEHEADER)
         self.list_ctrl.InsertColumn(1,'Column Name')
         self.list_ctrl.InsertColumn(2,'File Name')
-        self.ListColInfo(col_info)
+        self.ListColInfo(self.filename,col_dict)
 
         # helpTextTuple = (' '*40, 'These is no columns in this file')
         # self.list_ctrl.Append(helpTextTuple)
@@ -47,17 +48,24 @@ class NewListFrame(wx.Frame):
         panel.Fit()
         self.Centre()
         self.Show()
-    def ListColInfo(self,col_info):
-        file_name = col_info[0]
-        col_dict = {}
-        col_dict = col_info[1]
+    def ListColInfo(self,filename,col_dict):
         col_no = 0
-        for k in col_dict:
+        for col_name in col_dict.keys():
             self.list_ctrl.InsertItem(col_no,str(col_no+1)+' '*10)
-            self.list_ctrl.SetItem(col_no,1,k)
-            self.list_ctrl.SetItem(col_no,2,file_name)
+            self.list_ctrl.SetItem(col_no,1,col_name)
+            self.list_ctrl.SetItem(col_no,2,filename)
             col_no = col_no + 1
         self.Autosize()
+        # file_name = col_dict[0]
+        # col_dict = {}
+        # col_dict = col_dict[1]
+        # col_no = 0
+        # for k in col_dict:
+        #     self.list_ctrl.InsertItem(col_no,str(col_no+1)+' '*10)
+        #     self.list_ctrl.SetItem(col_no,1,k)
+        #     self.list_ctrl.SetItem(col_no,2,file_name)
+        #     col_no = col_no + 1
+        # self.Autosize()
             
         # pass
     # def ListColInfo(self,col_dict):
@@ -127,7 +135,7 @@ class ButtonPanel(wx.Panel):
 
         super(ButtonPanel, self).__init__(parent = parent , id = id)
 
-        listALL = wx.Button(self,-1,'Create Final File')
+        listALL = wx.Button(self,-1,'Comfirm!')
 
         listALL.Bind(wx.EVT_LEFT_DOWN, onButtonHandlers)
 
