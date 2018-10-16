@@ -120,47 +120,35 @@ class FileCtrl(wx.ListCtrl):
             assert(isinstance(rowDataTuple[idx],(bytes,str,int))),'One or both data elements are not strings or numbers.'
 
         self.rowDataTupleTruncated = tuple(rowDataTuple[:self.numCols])
-        # print(self.numCols)
-        # print(self.rowDataTupleTruncated)
-        # print(self.entriesList)
-        # print(self.haveEntries)
+
         if (self.rowDataTupleTruncated not in self.entriesList):
 
             if (not self.haveEntries):
                 self.DeleteAllItems()
 
             self.Append(self.rowDataTupleTruncated)
-            # print(self.rowDataTupleTruncated)
+  
             self.entriesList.append(self.rowDataTupleTruncated)
-            # print(self.entriesList)
+    
             self.numEntries += 1
             self.haveEntries = True
 
             self.Autosize()
     # def GetEntriesList(self):
     #     return self.numEntries
-    
     def Autosize(self):
-
-        self.Append(self.rowDataTupleTruncated)
-        for colIndex in range( len( self.rowDataTupleTruncated ) ) :
+        for colIndex in [1,2,3]:
+            col_width = self.GetColumnWidth(colIndex)
             self.SetColumnWidth( colIndex, wx.LIST_AUTOSIZE )
-
-        self.DeleteItem( self.GetItemCount() - 1 )
-        """
-        If any one filename is very long the column width was set too long and
-          occupies "too much" width in the control causing little or no display
-          of the folder paths to be shown.
-
-        Set first row's width to no more than 50% of the control's client width.
-        This is a "reasonable" balance which leaves both columns's data
-           at least 50% displayed at all times.
-        """
-        firstColMaxWid = self.GetClientSize()[ 0 ] / 2      # Half the avaiable width.
-        firstColIndex = 0                           # Avoid the use of "Magic Numbers".
-        firstColActualWid = self.GetColumnWidth( firstColIndex )
-        reasonableWid = min( firstColMaxWid, firstColActualWid )
-        self.SetColumnWidth( firstColIndex, reasonableWid )
+            print(self.GetClientSize())
+            ColMaxWid = self.GetClientSize()[ 0 ] / 2      # Half the avaiable width.
+                          # Avoid the use of "Magic Numbers".
+            input_width = self.GetColumnWidth( colIndex )
+            print(input_width)
+            reasonableWid = max( col_width, input_width )
+            finalWid = min(reasonableWid,ColMaxWid)
+            self.SetColumnWidth( colIndex, reasonableWid )
+            
     def GetEntries(self):
         # print(self.entriesList)
         return self.entriesList
