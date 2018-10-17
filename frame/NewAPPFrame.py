@@ -4,6 +4,7 @@ import wx
 from BasicClass import DropTarget as DT
 from BasicClass import FileCtrl as FC
 from BasicClass import Button as BT
+from BasicClass import PanelTemp as PT
 from frame import NewListFrame as NLF
 
 from collections import defaultdict
@@ -20,7 +21,7 @@ class AppFrame(wx.Frame):
         self.file_path = file_path
         self.filesAndLinks = list()
         self.col_dict = {}
-        panel = wx.Panel(self,-1)
+        panel = PT.MyPanel(self)
 
         self.filedropctrl = FC.FileCtrl(panel,size = (550,300),style = wx.LC_REPORT|wx.BORDER_SUNKEN)
         self.filedropctrl.InsertColumn(0,'File Path')

@@ -1,10 +1,14 @@
 import wx
+# from wx.lib.pubsub import pub
+
 
 class ButtonPanel(wx.Panel):
 
     def __init__(self,parent = None, id = -1,ButtonName = None, onButtonHandlers = None):
 
         super(ButtonPanel, self).__init__(parent = parent , id = id)
+        
+        # pub.subscribe(self.OnListen, 'GetSelectCol')
 
         listALL = wx.Button(self,-1,ButtonName)
 
@@ -24,3 +28,7 @@ class ButtonPanel(wx.Panel):
 
         self.SetSizer( btnPanel_outerVertSzr )
         self.Layout()
+
+    # def OnListen(self, select_col):
+
+    #     self.select_col = select_col

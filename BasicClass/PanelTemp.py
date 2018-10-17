@@ -14,3 +14,5 @@ class MyPanel(wx.Panel):
     def OnListen(self, select_col):
 
         self.select_col = select_col
+
+    

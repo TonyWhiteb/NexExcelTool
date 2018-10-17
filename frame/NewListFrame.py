@@ -5,6 +5,7 @@ from pandas import ExcelWriter
 import  wx.lib.mixins.listctrl  as  listmix
 from BasicClass import FileCtrl as fc
 from BasicClass import Button as BT
+from BasicClass import PanelTemp as PT
 
 class NewListFrame(wx.Frame):
 
@@ -12,7 +13,7 @@ class NewListFrame(wx.Frame):
 
         wx.Frame.__init__(self,None,wx.ID_ANY,"List Columns",pos= (700,300))
         self.SetClientSize((650,400))
-        panel = wx.Panel(self,wx.ID_ANY)
+        panel = PT.MyPanel(self)
 
         # self.col_dict = col_dict
         self.filename = filename
