@@ -4,6 +4,7 @@ import pandas as pd
 from pandas import ExcelWriter
 import  wx.lib.mixins.listctrl  as  listmix
 from BasicClass import FileCtrl as fc
+from BasicClass import Button as BT
 
 class NewListFrame(wx.Frame):
 
@@ -31,8 +32,8 @@ class NewListFrame(wx.Frame):
         self.list_ctrl.SetColumnWidth(1,wx.LIST_AUTOSIZE_USEHEADER)
         self.list_ctrl.SetColumnWidth(2,wx.LIST_AUTOSIZE_USEHEADER)
 
-        onButtonHandlers = self.onSaveFile
-        self.buttonpnl = ButtonPanel(panel, onButtonHandlers=onButtonHandlers)
+        # onButtonHandlers = self.onSaveFile
+        self.buttonpnl = BT.ButtonPanel(panel, ButtonName= 'Save Columns', onButtonHandlers= self.onSaveFile)
 
         box_h = wx.BoxSizer(wx.HORIZONTAL)
         box_v = wx.BoxSizer(wx.VERTICAL)
@@ -129,30 +130,30 @@ class NewListFrame(wx.Frame):
         # dlg.Destroy()
 
 
-class ButtonPanel(wx.Panel):
+# class ButtonPanel(wx.Panel):
 
-    def __init__(self,parent = None, id = -1, onButtonHandlers = None):
+#     def __init__(self,parent = None, id = -1, onButtonHandlers = None):
 
-        super(ButtonPanel, self).__init__(parent = parent , id = id)
+#         super(ButtonPanel, self).__init__(parent = parent , id = id)
 
-        listALL = wx.Button(self,-1,'Comfirm!')
+#         listALL = wx.Button(self,-1,'Comfirm!')
 
-        listALL.Bind(wx.EVT_LEFT_DOWN, onButtonHandlers)
+#         listALL.Bind(wx.EVT_LEFT_DOWN, onButtonHandlers)
 
-        btnPanel_innerHorzSzr = wx.BoxSizer( wx.HORIZONTAL )
-        btnPanel_innerHorzSzr.AddStretchSpacer( prop=1 )
-        btnPanel_innerHorzSzr.Add(listALL)
-        btnPanel_innerHorzSzr.AddSpacer( 25 )
+#         btnPanel_innerHorzSzr = wx.BoxSizer( wx.HORIZONTAL )
+#         btnPanel_innerHorzSzr.AddStretchSpacer( prop=1 )
+#         btnPanel_innerHorzSzr.Add(listALL)
+#         btnPanel_innerHorzSzr.AddSpacer( 25 )
 
-        btnPanel_innerHorzSzr.AddStretchSpacer( prop=1 )
+#         btnPanel_innerHorzSzr.AddStretchSpacer( prop=1 )
 
-        btnPanel_outerVertSzr = wx.BoxSizer( wx.VERTICAL )
-        btnPanel_outerVertSzr.AddSpacer( 5 )
-        btnPanel_outerVertSzr.Add( btnPanel_innerHorzSzr, flag=wx.EXPAND )
-        btnPanel_outerVertSzr.AddSpacer( 5 )
+#         btnPanel_outerVertSzr = wx.BoxSizer( wx.VERTICAL )
+#         btnPanel_outerVertSzr.AddSpacer( 5 )
+#         btnPanel_outerVertSzr.Add( btnPanel_innerHorzSzr, flag=wx.EXPAND )
+#         btnPanel_outerVertSzr.AddSpacer( 5 )
 
-        self.SetSizer( btnPanel_outerVertSzr )
-        self.Layout()
+#         self.SetSizer( btnPanel_outerVertSzr )
+#         self.Layout()
 
 class ListColCtrl(fc.FileCtrl, listmix.CheckListCtrlMixin, listmix.ListCtrlAutoWidthMixin):
 

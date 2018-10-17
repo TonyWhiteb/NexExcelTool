@@ -3,6 +3,7 @@ import wx
 
 from BasicClass import DropTarget as DT
 from BasicClass import FileCtrl as FC
+from BasicClass import Button as BT
 from frame import NewListFrame as NLF
 
 from collections import defaultdict
@@ -40,9 +41,9 @@ class AppFrame(wx.Frame):
 
 
 
-        onButtonHandlers = self.OnListColButton
-        self.buttonpnl = ButtonPanel(panel,onButtonHandlers= onButtonHandlers,size = (-1,100))
-
+        # onButtonHandlers = self.OnListColButton
+        # self.buttonpnl = ButtonPanel(panel,onButtonHandlers= onButtonHandlers,size = (-1,100))
+        self.buttonpnl = BT.ButtonPanel(panel, ButtonName= 'List Column', onButtonHandlers= self.OnListColButton)
         box_h = wx.BoxSizer(wx.VERTICAL)
         box_v = wx.BoxSizer(wx.HORIZONTAL)
         box_v.AddSpacer(25)
@@ -101,27 +102,27 @@ class AppFrame(wx.Frame):
         dlg.ShowModal()
         dlg.Destroy() 
 
-class ButtonPanel(wx.Panel):
+# class ButtonPanel(wx.Panel):
 
-    def __init__(self,parent = None, id = -1, onButtonHandlers = None,size = wx.DefaultSize,style = wx.DEFAULT_FRAME_STYLE):
+#     def __init__(self,parent = None, id = -1, onButtonHandlers = None,size = wx.DefaultSize,style = wx.DEFAULT_FRAME_STYLE):
 
-        super(ButtonPanel, self).__init__(parent = parent , id = id,size = size, style = style)
+#         super(ButtonPanel, self).__init__(parent = parent , id = id,size = size, style = style)
 
-        listALL = wx.Button(self,-1,'List Columns')
+#         listALL = wx.Button(self,-1,'List Columns')
 
-        listALL.Bind(wx.EVT_LEFT_DOWN, onButtonHandlers)
+#         listALL.Bind(wx.EVT_LEFT_DOWN, onButtonHandlers)
 
-        btnPanel_innerHorzSzr = wx.BoxSizer( wx.HORIZONTAL )
-        btnPanel_innerHorzSzr.AddStretchSpacer( prop=1 )
-        btnPanel_innerHorzSzr.Add(listALL)
-        btnPanel_innerHorzSzr.AddSpacer( 25 )
+#         btnPanel_innerHorzSzr = wx.BoxSizer( wx.HORIZONTAL )
+#         btnPanel_innerHorzSzr.AddStretchSpacer( prop=1 )
+#         btnPanel_innerHorzSzr.Add(listALL)
+#         btnPanel_innerHorzSzr.AddSpacer( 25 )
 
-        btnPanel_innerHorzSzr.AddStretchSpacer( prop=1 )
+#         btnPanel_innerHorzSzr.AddStretchSpacer( prop=1 )
 
-        btnPanel_outerVertSzr = wx.BoxSizer( wx.VERTICAL )
-        btnPanel_outerVertSzr.AddSpacer( 5 )
-        btnPanel_outerVertSzr.Add( btnPanel_innerHorzSzr, flag=wx.EXPAND )
-        btnPanel_outerVertSzr.AddSpacer( 5 )
+#         btnPanel_outerVertSzr = wx.BoxSizer( wx.VERTICAL )
+#         btnPanel_outerVertSzr.AddSpacer( 5 )
+#         btnPanel_outerVertSzr.Add( btnPanel_innerHorzSzr, flag=wx.EXPAND )
+#         btnPanel_outerVertSzr.AddSpacer( 5 )
 
-        self.SetSizer( btnPanel_outerVertSzr )
-        self.Layout()
+#         self.SetSizer( btnPanel_outerVertSzr )
+#         self.Layout()
