@@ -30,7 +30,8 @@ class OtherFrame(wx.Frame):
         Send a message and close frame
         """
         msg = self.msgTxt.GetValue()
-        pub.sendMessage(("show.mainframe"), msg)
+        print(msg)
+        pub.sendMessage('datapass',msg = msg)
         self.Close()
 
 
@@ -44,7 +45,7 @@ class MainPanel(wx.Panel):
         wx.Panel.__init__(self, parent=parent)
         self.frame = parent
 
-        pub.subscribe(self.showFrame, ("show.mainframe"))
+        pub.subscribe(self.showFrame, 'datapass')
 
         self.pubsubText = wx.TextCtrl(self, value="")
         hideBtn = wx.Button(self, label="Hide")
@@ -68,7 +69,7 @@ class MainPanel(wx.Panel):
         Shows the frame and shows the message sent in the
         text control
         """
-        self.pubsubText.SetValue(msg.data)
+        self.pubsubText.SetValue(msg)
         frame = self.GetParent()
         frame.Show()
 
