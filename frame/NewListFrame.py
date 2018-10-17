@@ -1,6 +1,7 @@
 import sys,os
 import wx
 import pandas as pd
+from wx.lib.pubsub import pub
 from pandas import ExcelWriter
 import  wx.lib.mixins.listctrl  as  listmix
 from BasicClass import FileCtrl as fc
@@ -33,8 +34,8 @@ class NewListFrame(wx.Frame):
         self.list_ctrl.SetColumnWidth(1,wx.LIST_AUTOSIZE_USEHEADER)
         self.list_ctrl.SetColumnWidth(2,wx.LIST_AUTOSIZE_USEHEADER)
 
-        # onButtonHandlers = self.onSaveFile
-        self.buttonpnl = BT.ButtonPanel(panel, ButtonName= 'Save Columns', onButtonHandlers= self.onSaveFile)
+        # onButtonHandlers = self.onSelectCol
+        self.buttonpnl = BT.ButtonPanel(panel, ButtonName= 'Save Columns', onButtonHandlers= self.onSelectCol)
 
         box_h = wx.BoxSizer(wx.HORIZONTAL)
         box_v = wx.BoxSizer(wx.VERTICAL)
@@ -94,7 +95,10 @@ class NewListFrame(wx.Frame):
         for colIndex in range(2):
             self.list_ctrl.SetColumnWidth(colIndex,wx.LIST_AUTOSIZE)
 
-    def onSaveFile(self,event):
+    def onSelectCol(self,event):
+        self.index_select = self.list_ctrl.getSelected_id()
+        print(self.index_select)
+        pub.sendMessage( 'GetSelectCol',select_col= self.index_select)
         pass
         # dlg = wx.FileDialog(
         #       self, message = "Save File As",
