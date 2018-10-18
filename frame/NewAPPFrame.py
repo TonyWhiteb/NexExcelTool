@@ -64,9 +64,10 @@ class AppFrame(wx.Frame):
         self.Centre()
         self.Show()
     # def OnColInfo(self,col_info):
-    def OnListen(self,select_col):
-        print('Hello!')
-        pass
+    def OnListen(self,index,select_col):
+    
+        self.filedropctrl.SetItem(index,3,str(len(select_col)))
+
 
     def OnFilesDropped(self, filenameDropDict):
        
@@ -97,7 +98,7 @@ class AppFrame(wx.Frame):
             select_name = self.filedropctrl.GetItemText(currRow,col = 1)
             select_type = self.filedropctrl.GetItemText(currRow,col = 2)
             col_info = self.col_dict[select_name]
-            ListCol_frame = NLF.NewListFrame(select_name,col_info,self.file_path)
+            ListCol_frame = NLF.NewListFrame(currRow,select_name,col_info,self.file_path)
             ListCol_frame.Show()
         except TypeError:
             self.Warn('You should select one row or drag one file at least')

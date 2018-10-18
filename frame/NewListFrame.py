@@ -10,10 +10,11 @@ from BasicClass import PanelTemp as PT
 
 class NewListFrame(wx.Frame):
 
-    def __init__(self,filename,col_dict,file_path):
+    def __init__(self,index,filename,col_dict,file_path):
 
         wx.Frame.__init__(self,None,wx.ID_ANY,"List Columns",pos= (700,300))
         self.SetClientSize((650,400))
+        self.index = index
         panel = wx.Panel(self,-1)
 
         # self.col_dict = col_dict
@@ -96,11 +97,14 @@ class NewListFrame(wx.Frame):
             self.list_ctrl.SetColumnWidth(colIndex,wx.LIST_AUTOSIZE)
 
     def onSelectCol(self,event):
+
         self.index_select = self.list_ctrl.getSelected_id()
-        print(self.index_select)
-        pub.sendMessage( 'GetSelectCol',select_col= self.index_select)
+
+        pub.sendMessage( 'GetSelectCol',index = self.index,select_col= self.index_select)
+
+        self.Close()
         # print(self.GetParent())
-        pass
+
         # dlg = wx.FileDialog(
         #       self, message = "Save File As",
         #       defaultDir=self.currentDirectory,
