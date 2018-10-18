@@ -14,7 +14,7 @@ class NewListFrame(wx.Frame):
 
         wx.Frame.__init__(self,None,wx.ID_ANY,"List Columns",pos= (700,300))
         self.SetClientSize((650,400))
-        panel = PT.MyPanel(self)
+        panel = wx.Panel(self,-1)
 
         # self.col_dict = col_dict
         self.filename = filename
@@ -99,6 +99,7 @@ class NewListFrame(wx.Frame):
         self.index_select = self.list_ctrl.getSelected_id()
         print(self.index_select)
         pub.sendMessage( 'GetSelectCol',select_col= self.index_select)
+        # print(self.GetParent())
         pass
         # dlg = wx.FileDialog(
         #       self, message = "Save File As",

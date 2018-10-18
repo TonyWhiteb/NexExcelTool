@@ -71,6 +71,7 @@ class MainPanel(wx.Panel):
         """
         self.pubsubText.SetValue(msg)
         frame = self.GetParent()
+        print(frame)
         frame.Show()
 
 ########################################################################

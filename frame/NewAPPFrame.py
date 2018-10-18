@@ -8,6 +8,7 @@ from BasicClass import PanelTemp as PT
 from frame import NewListFrame as NLF
 
 from collections import defaultdict
+from wx.lib.pubsub import pub
 
 
 class AppFrame(wx.Frame):
@@ -21,7 +22,9 @@ class AppFrame(wx.Frame):
         self.file_path = file_path
         self.filesAndLinks = list()
         self.col_dict = {}
-        panel = PT.MyPanel(self)
+        # panel = PT.MyPanel(self)
+        panel = wx.Panel(self,-1)
+        pub.subscribe(self.OnListen, 'GetSelectCol')
 
         self.filedropctrl = FC.FileCtrl(panel,size = (550,300),style = wx.LC_REPORT|wx.BORDER_SUNKEN)
         self.filedropctrl.InsertColumn(0,'File Path')
@@ -61,6 +64,9 @@ class AppFrame(wx.Frame):
         self.Centre()
         self.Show()
     # def OnColInfo(self,col_info):
+    def OnListen(self,select_col):
+        print('Hello!')
+        pass
 
     def OnFilesDropped(self, filenameDropDict):
        
