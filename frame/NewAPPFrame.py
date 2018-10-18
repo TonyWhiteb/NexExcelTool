@@ -88,6 +88,21 @@ class AppFrame(wx.Frame):
             textTuple = (pathname,basename,filetype,total_col)
             dropTarget.WriteTextTuple(textTuple)
 
+    def OnGetSample(self, event):
+
+        # currRow = self.filedropctrl.GetCurrRow()
+        # LoopToken = 0
+
+        # try:
+        #     select_path = self.filedropctrl.GetItemText(currRow,col = 0)
+        #     select_name = self.filedropctrl.GetItemText(currRow,col = 1)
+        #     os.chdir(select_path)
+        #     with open(select_name) as Sample:
+        #         for line in Sample:
+        pass
+
+
+
 
     def OnListColButton(self, event):
        
