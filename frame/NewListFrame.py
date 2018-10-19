@@ -99,8 +99,9 @@ class NewListFrame(wx.Frame):
     def onSelectCol(self,event):
 
         self.index_select = self.list_ctrl.getSelected_id()
+        self.select_col = self.list_ctrl.getSelected_col()
 
-        pub.sendMessage( 'GetSelectCol',index = self.index,select_col= self.index_select)
+        pub.sendMessage( 'GetSelectCol',index = self.index,select_index= self.index_select,select_col = self.select_col)
 
         self.Close()
         # print(self.GetParent())
@@ -189,3 +190,6 @@ class ListColCtrl(fc.FileCtrl, listmix.CheckListCtrlMixin, listmix.ListCtrlAutoW
 
     def getSelected_id(self):
         return  self.selected_id
+
+    def getSelected_col(self):
+        return self.selected

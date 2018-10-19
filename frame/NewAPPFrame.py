@@ -6,6 +6,7 @@ from BasicClass import FileCtrl as FC
 from BasicClass import Button as BT
 from BasicClass import PanelTemp as PT
 from frame import NewListFrame as NLF
+from frame import Preview 
 
 from collections import defaultdict
 from wx.lib.pubsub import pub
@@ -22,6 +23,8 @@ class AppFrame(wx.Frame):
         self.file_path = file_path
         self.filesAndLinks = list()
         self.col_dict = {}
+        self.select_col = None
+        self.select_index = None
         # panel = PT.MyPanel(self)
         panel = wx.Panel(self,-1)
         pub.subscribe(self.OnListen, 'GetSelectCol')
@@ -64,9 +67,11 @@ class AppFrame(wx.Frame):
         self.Centre()
         self.Show()
     # def OnColInfo(self,col_info):
-    def OnListen(self,index,select_col):
+    def OnListen(self,index,select_index,select_col):
     
         self.filedropctrl.SetItem(index,3,str(len(select_col)))
+        self.select_col = select_col
+        self.select_index = select_index
 
 
     def OnFilesDropped(self, filenameDropDict):
@@ -79,7 +84,6 @@ class AppFrame(wx.Frame):
         pathname_list = filenameDropDict[ 'pathname' ]
         filetype_list = filenameDropDict['filetype']
         col_dict = filenameDropDict['col_info']
-        self.col_dict.update(col_dict)
         for index in range(len(basename_list)):
             basename = basename_list[index]
             pathname = pathname_list[index]
@@ -90,15 +94,32 @@ class AppFrame(wx.Frame):
 
     def OnGetSample(self, event):
 
-        # currRow = self.filedropctrl.GetCurrRow()
-        # LoopToken = 0
+        currRow = self.filedropctrl.GetCurrRow()
+        looptoken = 0
 
-        # try:
-        #     select_path = self.filedropctrl.GetItemText(currRow,col = 0)
-        #     select_name = self.filedropctrl.GetItemText(currRow,col = 1)
-        #     os.chdir(select_path)
-        #     with open(select_name) as Sample:
-        #         for line in Sample:
+        try:
+            select_path = self.filedropctrl.GetItemText(currRow,col = 0)
+            select_name = self.filedropctrl.GetItemText(currRow,col = 1)
+            os.chdir(select_path)
+            if self.select_col == None:
+                
+                with open(select_name) as Sample:
+                    for line in Sample:
+                        looptoken = looptoken + 1
+                        if looptoken == 1:
+                            column_list = line.split('\t')
+                            continue
+                        
+
+            # with open(select_name) as Sample:
+            #     for line in Sample:
+            #         looptoken = looptoken + 1 
+            #         if looptoken == 1:
+            #             column_list = line.split('\t')
+            #             continue
+            #         for filename, col_name in enumerate(self.)
+                    
+                    
         pass
 
 

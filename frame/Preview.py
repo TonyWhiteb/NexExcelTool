@@ -1,7 +1,7 @@
 import wx
 import wx.grid as grid
 
-class GridPanel(wx.Panel):
+class ButtonPanel(wx.Panel):
     """"""
 
     #----------------------------------------------------------------------
@@ -9,21 +9,24 @@ class GridPanel(wx.Panel):
         """Constructor"""
         wx.Panel.__init__(self, parent = parent)
 
-        self.txtOne = wx.StaticText(self, -1, label = "piradoba", pos = (20,10))
-        self.txtPlace = wx.TextCtrl(self, pos = (20,30))
-        self.txtTwo = wx.StaticText(self, -1, label = "", pos = (20,40))
-
-        button = wx.Button(self, label = "search", pos = (20,70))
+        button = wx.Button(self, label = "Comfirm")
         button.Bind(wx.EVT_BUTTON, self.onButton)
 
-    def onButton(self, event):
-        var=self.txtPlace.GetValue()
-        if len(var) == 9 or len(var) == 11:
-            print ("???")
-        # GridPanel->SplitterWindow->MainFrame ( 2x GetParent() )
-        self.GetParent().GetParent().AddPanel()
+        btn_vert = wx.BoxSizer(wx.VERTICAL)
+        btn_vert.AddSpacer(5)
+        btn_vert.Add(button)
+        btn_vert.AddSpacer(5)
 
-class ButtonPanel(wx.Panel):
+
+        btn_horz = wx.BoxSizer(wx.HORIZONTAL)
+        btn_horz.Add(btn_vert,flag = wx.EXPAND)
+        btn_horz.AddSpacer(25)
+        self.SetSizer(btn_horz)
+        self.Layout()
+    def onButton(self, event):
+        pass
+
+class GridPanel(wx.Panel):
 
     def __init__(self, parent,a,b):
         """Constructor"""
@@ -42,20 +45,26 @@ class MainFrame(wx.Frame):
     #----------------------------------------------------------------------
     def __init__(self):
         """Constructor"""
-        wx.Frame.__init__(self, None, title="test", size=(800,600))
+        wx.Frame.__init__(self, None, title="Preview", size=(800,600))
 
-        self.splitter = wx.SplitterWindow(self)
+        panel = wx.Panel(self,-1)
+        self.btn_pnl = ButtonPanel(panel)
+        self.grid_pnl = GridPanel(panel,30,30)
 
-        self.panelOne = GridPanel(self.splitter)
-        self.panelTwo = ButtonPanel(self.splitter, 1, 1)
+        box_h = wx.BoxSizer(wx.VERTICAL)
+        box_v = wx.BoxSizer(wx.HORIZONTAL)
+        box_v.AddSpacer(25)
+        box_v.Add(self.grid_pnl,1,wx.EXPAND)
+        box_v.AddSpacer(25)
+        box_v.Add(self.btn_pnl,0,wx.EXPAND)
 
-        self.splitter.SplitHorizontally(self.panelOne, self.panelTwo)
-        self.splitter.SetMinimumPaneSize(20)
+        box_h.AddSpacer(20)
+        box_h.Add(box_v,-1,wx.EXPAND)
+        box_h.AddSpacer(20)
 
-        self.sizer = wx.BoxSizer(wx.VERTICAL)
-        self.sizer.Add(self.splitter, 2, wx.EXPAND)
-
-        self.SetSizer(self.sizer)
+        panel.SetSizer(box_h)
+        panel.Fit()
+        self.Centre()
 
     def AddPanel(self):
         self.newPanel = ButtonPanel(self, 1, 1)
