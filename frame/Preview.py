@@ -28,13 +28,14 @@ class ButtonPanel(wx.Panel):
 
 class GridPanel(wx.Panel):
 
-    def __init__(self, parent,a,b):
+    def __init__(self, parent,column_list,col_dict):
         """Constructor"""
         wx.Panel.__init__(self, parent=parent)
-
+        
         MyGrid=grid.Grid(self)
-        MyGrid.CreateGrid(a, b)
-
+        MyGrid.CreateGrid(len(column_list),30)
+        for i in range(len(column_list)):
+            MyGrid.SetColLabelValue(i,column_list[i])
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(MyGrid, 0, wx.EXPAND)
         self.SetSizer(sizer)
@@ -43,13 +44,13 @@ class MainFrame(wx.Frame):
     """"""
 
     #----------------------------------------------------------------------
-    def __init__(self):
+    def __init__(self, column_list,col_dict):
         """Constructor"""
-        wx.Frame.__init__(self, None, title="Preview", size=(800,600))
+        wx.Frame.__init__(self, None,column_list,col_dict,title="Preview", size=(800,600))
 
         panel = wx.Panel(self,-1)
         self.btn_pnl = ButtonPanel(panel)
-        self.grid_pnl = GridPanel(panel,30,30)
+        self.grid_pnl = GridPanel(panel,column_list,col_dict)
 
         box_h = wx.BoxSizer(wx.VERTICAL)
         box_v = wx.BoxSizer(wx.HORIZONTAL)
@@ -66,13 +67,14 @@ class MainFrame(wx.Frame):
         panel.Fit()
         self.Centre()
 
+
     def AddPanel(self):
         self.newPanel = ButtonPanel(self, 1, 1)
         self.sizer.Add(self.newPanel, 1, wx.EXPAND)
         self.sizer.Layout()
 
-if __name__ == "__main__":
-    app = wx.App(False)
-    frame = MainFrame()
-    frame.Show()
-    app.MainLoop()
+# if __name__ == "__main__":
+#     app = wx.App(False)
+#     frame = MainFrame()
+#     frame.Show()
+#     app.MainLoop()

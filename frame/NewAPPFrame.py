@@ -102,13 +102,39 @@ class AppFrame(wx.Frame):
             select_name = self.filedropctrl.GetItemText(currRow,col = 1)
             os.chdir(select_path)
             if self.select_col == None:
-                
+                self.col_dict = {}
                 with open(select_name) as Sample:
                     for line in Sample:
                         looptoken = looptoken + 1
                         if looptoken == 1:
                             column_list = line.split('\t')
+                            self.col_dict.fromkeys(column_list)
                             continue
+                        value_list = line.split('\t')
+                        for i in range(len(column_list)):
+                            self.col_dict[select_name][column_list[i]] = value_list[i]
+                        if looptoken == 100:
+                            break
+            else:
+                self.col_dict = {}
+                with open(select_name) as Sample:
+                    for line in Sample:
+                        looptoken = looptoken + 1
+                        if looptoken == 1:
+                            column_list = line.split('\t')
+                            self.col_dict.fromkeys(self.select_col)
+                            continue
+                        value_list = line.split('\t')
+                        for i in range(len(self.select_col)):
+                            self.col_dict[self.select_col[i]] = value_list[self.select_index[i]]
+                        if looptoken == 100:
+                            break
+            preview_frame = Preview.MainFrame(list(self.col_dict.keys()), self.col_dict)
+            preview_frame.Show()
+        except TypeError:
+            self.Warn('You should select one row or drag one file at least')
+        except OSError:
+            self.Warn('You should select one row or drag one file at least')
                         
 
             # with open(select_name) as Sample:
@@ -120,7 +146,7 @@ class AppFrame(wx.Frame):
             #         for filename, col_name in enumerate(self.)
                     
                     
-        pass
+        # pass
 
 
 
