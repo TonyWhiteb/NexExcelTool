@@ -7,6 +7,7 @@ from BasicClass import Button as BT
 from BasicClass import PanelTemp as PT
 from frame import NewListFrame as NLF
 from frame import Preview 
+from TEST import test
 
 from collections import defaultdict
 from wx.lib.pubsub import pub
@@ -49,7 +50,7 @@ class AppFrame(wx.Frame):
 
 
         # onButtonHandlers = self.OnListColButton
-        self.buttonpnl = ButtonPanel(panel,onlistALL= self.OnListColButton,size = (-1,100))
+        self.buttonpnl = ButtonPanel(panel,onlistALL= self.OnListColButton, onGetSample = self.OnGetSample,size = (-1,100))
         # self.buttonpnl = BT.ButtonPanel(panel, ButtonName= 'List Column', onButtonHandlers= self.OnListColButton)
         box_h = wx.BoxSizer(wx.VERTICAL)
         box_v = wx.BoxSizer(wx.HORIZONTAL)
@@ -83,12 +84,12 @@ class AppFrame(wx.Frame):
         basename_list = filenameDropDict[ 'basenameList' ]     # leaf folders, not basenames !
         pathname_list = filenameDropDict[ 'pathname' ]
         filetype_list = filenameDropDict['filetype']
-        col_dict = filenameDropDict['col_info']
+        self.drop_col_dict = filenameDropDict['col_info']
         for index in range(len(basename_list)):
             basename = basename_list[index]
             pathname = pathname_list[index]
             filetype = filetype_list[index]
-            total_col = len(col_dict[basename])
+            total_col = len(self.drop_col_dict[basename])
             textTuple = (pathname,basename,filetype,total_col)
             dropTarget.WriteTextTuple(textTuple)
 
@@ -96,45 +97,48 @@ class AppFrame(wx.Frame):
 
         currRow = self.filedropctrl.GetCurrRow()
         looptoken = 0
-
-        try:
-            select_path = self.filedropctrl.GetItemText(currRow,col = 0)
-            select_name = self.filedropctrl.GetItemText(currRow,col = 1)
-            os.chdir(select_path)
-            if self.select_col == None:
-                self.col_dict = {}
-                with open(select_name) as Sample:
-                    for line in Sample:
-                        looptoken = looptoken + 1
-                        if looptoken == 1:
-                            column_list = line.split('\t')
-                            self.col_dict.fromkeys(column_list)
-                            continue
-                        value_list = line.split('\t')
-                        for i in range(len(column_list)):
-                            self.col_dict[select_name][column_list[i]] = value_list[i]
-                        if looptoken == 100:
-                            break
-            else:
-                self.col_dict = {}
-                with open(select_name) as Sample:
-                    for line in Sample:
-                        looptoken = looptoken + 1
-                        if looptoken == 1:
-                            column_list = line.split('\t')
-                            self.col_dict.fromkeys(self.select_col)
-                            continue
-                        value_list = line.split('\t')
-                        for i in range(len(self.select_col)):
-                            self.col_dict[self.select_col[i]] = value_list[self.select_index[i]]
-                        if looptoken == 100:
-                            break
-            preview_frame = Preview.MainFrame(list(self.col_dict.keys()), self.col_dict)
-            preview_frame.Show()
-        except TypeError:
-            self.Warn('You should select one row or drag one file at least')
-        except OSError:
-            self.Warn('You should select one row or drag one file at least')
+        frame = test.MainFrame()
+        print('1')
+        frame.Show()
+        print('2')
+        # try:
+        #     select_path = self.filedropctrl.GetItemText(currRow,col = 0)
+        #     select_name = self.filedropctrl.GetItemText(currRow,col = 1)
+        #     os.chdir(select_path)
+        #     if self.select_col == None:
+        #         self.col_dict = {}
+        #         with open(select_name) as Sample:
+        #             for line in Sample:
+        #                 looptoken = looptoken + 1
+        #                 if looptoken == 1:
+        #                     column_list = line.split('\t')
+        #                     self.col_dict.fromkeys(column_list)
+        #                     continue
+        #                 value_list = line.split('\t')
+        #                 for i in range(len(column_list)):
+        #                     self.col_dict[select_name][column_list[i]] = value_list[i]
+        #                 if looptoken == 100:
+        #                     break
+        #     else:
+        #         self.col_dict = {}
+        #         with open(select_name) as Sample:
+        #             for line in Sample:
+        #                 looptoken = looptoken + 1
+        #                 if looptoken == 1:
+        #                     column_list = line.split('\t')
+        #                     self.col_dict.fromkeys(self.select_col)
+        #                     continue
+        #                 value_list = line.split('\t')
+        #                 for i in range(len(self.select_col)):
+        #                     self.col_dict[self.select_col[i]] = value_list[self.select_index[i]]
+        #                 if looptoken == 100:
+        #                     break
+        #     preview_frame = Preview.MainFrame(list(self.col_dict.keys()), self.col_dict)
+        #     preview_frame.Show()
+        # except TypeError:
+        #     self.Warn('You should select one row or drag one file at least')
+        # except OSError:
+        #     self.Warn('You should select one row or drag one file at least')
                         
 
             # with open(select_name) as Sample:
@@ -159,7 +163,7 @@ class AppFrame(wx.Frame):
             select_path = self.filedropctrl.GetItemText(currRow,col = 0)
             select_name = self.filedropctrl.GetItemText(currRow,col = 1)
             select_type = self.filedropctrl.GetItemText(currRow,col = 2)
-            col_info = self.col_dict[select_name]
+            col_info = self.drop_col_dict[select_name]
             ListCol_frame = NLF.NewListFrame(currRow,select_name,col_info,self.file_path)
             ListCol_frame.Show()
         except TypeError:
