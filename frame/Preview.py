@@ -46,7 +46,7 @@ class MainFrame(wx.Frame):
     #----------------------------------------------------------------------
     def __init__(self, column_list,col_dict):
         """Constructor"""
-        wx.Frame.__init__(self, None,column_list,col_dict,title="Preview", size=(800,600))
+        wx.Frame.__init__(self,None,title="Preview", size=(800,600))
 
         panel = wx.Panel(self,-1)
         self.btn_pnl = ButtonPanel(panel)
