@@ -28,29 +28,38 @@ class ButtonPanel(wx.Panel):
 
 class GridPanel(wx.Panel):
 
-    def __init__(self, parent,column_list,col_dict):
+    def __init__(self, parent,NumOfRows,column_list,col_dict):
         """Constructor"""
         wx.Panel.__init__(self, parent=parent)
-        
+        print(col_dict)
         MyGrid=grid.Grid(self)
-        MyGrid.CreateGrid(len(column_list),30)
+        MyGrid.CreateGrid(NumOfRows,len(column_list))
         for i in range(len(column_list)):
             MyGrid.SetColLabelValue(i,column_list[i])
+            MyGrid.AutoSizeColLabelSize(i)
+            for value in col_dict[column_list[i]]:
+                
+                row = col_dict[column_list[i]].index(value)
+                MyGrid.SetCellValue(row,i,value)
+
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(MyGrid, 0, wx.EXPAND)
         self.SetSizer(sizer)
+    
+
+
 
 class MainFrame(wx.Frame):
     """"""
 
     #----------------------------------------------------------------------
-    def __init__(self, column_list,col_dict):
+    def __init__(self,NumOfRows ,column_list,col_dict):
         """Constructor"""
         wx.Frame.__init__(self,None,title="Preview", size=(800,600))
 
         panel = wx.Panel(self,-1)
         self.btn_pnl = ButtonPanel(panel)
-        self.grid_pnl = GridPanel(panel,column_list,col_dict)
+        self.grid_pnl = GridPanel(panel,NumOfRows,column_list,col_dict)
 
         box_h = wx.BoxSizer(wx.VERTICAL)
         box_v = wx.BoxSizer(wx.HORIZONTAL)

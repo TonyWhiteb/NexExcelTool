@@ -166,18 +166,22 @@ class AppFrame(wx.Frame):
                         looptoken = looptoken + 1
                         if looptoken == 1:
                             column_list = line.split('\t')
-                            self.col_dict.fromkeys(self.select_col)
+                            self.col_dict = self.col_dict.fromkeys(self.select_col)
                             continue
                         value_list = line.split('\t')
                         for i in range(len(self.select_col)):
-                            self.col_dict[self.select_col[i]] = value_list[self.select_index[i]]
+                            if self.col_dict[self.select_col[i]] == None:
+                                self.col_dict[self.select_col[i]] = []
+                            self.col_dict[self.select_col[i]].append(value_list[self.select_index[i]])
                         if looptoken == 100:
                             break
-            preview_frame = Preview.MainFrame(list(self.col_dict.keys()), self.col_dict)
+            preview_frame = Preview.MainFrame(looptoken,list(self.col_dict.keys()), self.col_dict)
             preview_frame.Show()
-        except TypeError:
+        except TypeError as e:
+            print(e)
             self.Warn('You should select one row or drag one file at least')
-        except OSError:
+        except OSError as e:
+            print(e)
             self.Warn('You should select one row or drag one file at least')
                         
 
