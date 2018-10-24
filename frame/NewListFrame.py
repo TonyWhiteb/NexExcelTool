@@ -182,10 +182,10 @@ class ListColCtrl(fc.FileCtrl, listmix.CheckListCtrlMixin, listmix.ListCtrlAutoW
     def OnCheckItem(self,index, flag ):
 
         if flag == True:
-            self.selected.append(self.GetItemText(index))
+            self.selected.append(self.GetItemText(index,1))
             self.selected_id.append(index)
         else:
-            self.selected.remove(self.GetItemText(index))
+            self.selected.remove(self.GetItemText(index,1))
             self.selected_id.remove(index)
 
     def getSelected_id(self):

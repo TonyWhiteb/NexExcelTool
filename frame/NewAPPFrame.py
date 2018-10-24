@@ -92,97 +92,93 @@ class AppFrame(wx.Frame):
             total_col = len(self.drop_col_dict[basename])
             textTuple = (pathname,basename,filetype,total_col)
             dropTarget.WriteTextTuple(textTuple)
-    def OnGetSample(self,event):
-        currRow = self.filedropctrl.GetCurrRow()
-        looptoken = 0
-        select_path = self.filedropctrl.GetItemText(currRow,col = 0)
-        select_name = self.filedropctrl.GetItemText(currRow,col = 1)
-        os.chdir(select_path)
-        if self.select_col == None:
-            self.col_dict = {}
-            looptoken = 0
-            with open(select_name) as Sample:
-                for line in Sample:
-                    print(looptoken * 1)
-                    looptoken = looptoken + 1
-                    print(looptoken * 2)
-                    if looptoken == 1:
-                        column_list = line.split('\t')
-                        self.col_dict.fromkeys(column_list)
-                        continue
-                    value_list = line.split('\t')
-                    for i in range(len(column_list)):
-                        self.col_dict[select_name][column_list[i]] = value_list[i]
-                    if looptoken == 100:
-                        break
-        else:
-            self.col_dict = {}
-            looptoken = 0
-            with open(select_name) as Sample:
-                for line in Sample:
-                    print(looptoken * 3)
-                    looptoken = looptoken + 1
-                    print(looptoken * 4)
-                    if looptoken == 1:
-                        column_list = line.split('\t')
-                        self.col_dict.fromkeys(self.select_col)
-                        continue
-                    value_list = line.split('\t')
-                    for i in range(len(self.select_col)):
-                        self.col_dict[self.select_col[i]] = value_list[self.select_index[i]]
-                    if looptoken == 100:
-                        break
-        column_list = list(self.col_dict.keys())
-        print(column_list,self.col_dict)
-        # preview_frame = Preview.MainFrame(column_list, self.col_dict)
-        # preview_frame.Show()
-    # def OnGetSample(self, event):
-
+    # def OnGetSample(self,event):
     #     currRow = self.filedropctrl.GetCurrRow()
-    #     print(currRow)
     #     looptoken = 0
-    #     # frame = test.MainFrame()
-    #     # print('1')
-    #     # frame.Show()
-    #     # print('2')
-    #     try:
-    #         select_path = self.filedropctrl.GetItemText(currRow,col = 0)
-    #         select_name = self.filedropctrl.GetItemText(currRow,col = 1)
-    #         os.chdir(select_path)
-    #         if self.select_col == None:
-    #             self.col_dict = {}
-    #             with open(select_name) as Sample:
-    #                 for line in Sample:
-    #                     looptoken = looptoken + 1
-    #                     if looptoken == 1:
-    #                         column_list = line.split('\t')
-    #                         self.col_dict.fromkeys(column_list)
-    #                         continue
-    #                     value_list = line.split('\t')
-    #                     for i in range(len(column_list)):
-    #                         self.col_dict[select_name][column_list[i]] = value_list[i]
-    #                     if looptoken == 100:
-    #                         break
-    #         else:
-    #             self.col_dict = {}
-    #             with open(select_name) as Sample:
-    #                 for line in Sample:
-    #                     looptoken = looptoken + 1
-    #                     if looptoken == 1:
-    #                         column_list = line.split('\t')
-    #                         self.col_dict.fromkeys(self.select_col)
-    #                         continue
-    #                     value_list = line.split('\t')
-    #                     for i in range(len(self.select_col)):
-    #                         self.col_dict[self.select_col[i]] = value_list[self.select_index[i]]
-    #                     if looptoken == 100:
-    #                         break
-    #         preview_frame = Preview.MainFrame(list(self.col_dict.keys()), self.col_dict)
-    #         preview_frame.Show()
-    #     except TypeError:
-    #         self.Warn('You should select one row or drag one file at least')
-    #     except OSError:
-    #         self.Warn('You should select one row or drag one file at least')
+    #     select_path = self.filedropctrl.GetItemText(currRow,col = 0)
+    #     select_name = self.filedropctrl.GetItemText(currRow,col = 1)
+    #     os.chdir(select_path)
+    #     if self.select_col == None:
+    #         self.col_dict = {}
+    #         looptoken = 0
+    #         with open(select_name) as Sample:
+    #             for line in Sample:
+    #                 print(looptoken * 1)
+    #                 looptoken = looptoken + 1
+    #                 print(looptoken * 2)
+    #                 if looptoken == 1:
+    #                     column_list = line.split('\t')
+    #                     self.col_dict.fromkeys(column_list)
+    #                     continue
+    #                 value_list = line.split('\t')
+    #                 for i in range(len(column_list)):
+    #                     self.col_dict[select_name][column_list[i]] = value_list[i]
+    #                 if looptoken == 100:
+    #                     break
+    #     else:
+    #         self.col_dict = {}
+    #         looptoken = 0
+    #         with open(select_name) as Sample:
+    #             for line in Sample:
+    #                 print(looptoken * 3)
+    #                 looptoken = looptoken + 1
+    #                 print(looptoken * 4)
+    #                 if looptoken == 1:
+    #                     column_list = line.split('\t')
+    #                     self.col_dict.fromkeys(self.select_col)
+    #                     continue
+    #                 value_list = line.split('\t')
+    #                 for i in range(len(self.select_col)):
+    #                     self.col_dict[self.select_col[i]] = value_list[self.select_index[i]]
+    #                 if looptoken == 100:
+    #                     break
+    #     column_list = list(self.col_dict.keys())
+    #     print(column_list,self.col_dict)
+    #     preview_frame = Preview.MainFrame(column_list, self.col_dict)
+    #     preview_frame.Show()
+    def OnGetSample(self, event):
+
+        currRow = self.filedropctrl.GetCurrRow()
+        print(currRow)
+        looptoken = 0
+        try:
+            select_path = self.filedropctrl.GetItemText(currRow,col = 0)
+            select_name = self.filedropctrl.GetItemText(currRow,col = 1)
+            os.chdir(select_path)
+            if self.select_col == None:
+                self.col_dict = {}
+                with open(select_name) as Sample:
+                    for line in Sample:
+                        looptoken = looptoken + 1
+                        if looptoken == 1:
+                            column_list = line.split('\t')
+                            self.col_dict.fromkeys(column_list)
+                            continue
+                        value_list = line.split('\t')
+                        for i in range(len(column_list)):
+                            self.col_dict[select_name][column_list[i]] = value_list[i]
+                        if looptoken == 100:
+                            break
+            else:
+                self.col_dict = {}
+                with open(select_name) as Sample:
+                    for line in Sample:
+                        looptoken = looptoken + 1
+                        if looptoken == 1:
+                            column_list = line.split('\t')
+                            self.col_dict.fromkeys(self.select_col)
+                            continue
+                        value_list = line.split('\t')
+                        for i in range(len(self.select_col)):
+                            self.col_dict[self.select_col[i]] = value_list[self.select_index[i]]
+                        if looptoken == 100:
+                            break
+            preview_frame = Preview.MainFrame(list(self.col_dict.keys()), self.col_dict)
+            preview_frame.Show()
+        except TypeError:
+            self.Warn('You should select one row or drag one file at least')
+        except OSError:
+            self.Warn('You should select one row or drag one file at least')
                         
 
             # with open(select_name) as Sample:
