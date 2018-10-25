@@ -23,7 +23,7 @@ class AppFrame(wx.Frame):
         self.SetBackgroundColour(wx.WHITE)
         self.file_path = file_path
         self.filesAndLinks = list()
-        self.col_dict = {}
+        self.dict_combination = {}
         self.select_col = None
         self.select_index = None
         # panel = PT.MyPanel(self)
@@ -85,6 +85,7 @@ class AppFrame(wx.Frame):
         pathname_list = filenameDropDict[ 'pathname' ]
         filetype_list = filenameDropDict['filetype']
         self.drop_col_dict = filenameDropDict['col_info']
+
         for index in range(len(basename_list)):
             basename = basename_list[index]
             pathname = pathname_list[index]
@@ -92,6 +93,11 @@ class AppFrame(wx.Frame):
             total_col = len(self.drop_col_dict[basename])
             textTuple = (pathname,basename,filetype,total_col)
             dropTarget.WriteTextTuple(textTuple)
+
+    def GetCombDict(self,drop_col_dict):
+        # if self.dict_combination =={}:
+        pass
+
     
     def OnGetSample(self, event):
 

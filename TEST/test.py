@@ -1,4 +1,6 @@
-a = [1]
-print(a)
-a.append(1)
+a = {}
+b = {'a':'aa'}
+c= {'b':'bb'}
+a.update(b)
+a.update(c)
 print(a)
