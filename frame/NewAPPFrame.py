@@ -50,7 +50,7 @@ class AppFrame(wx.Frame):
 
 
         # onButtonHandlers = self.OnListColButton
-        self.buttonpnl = ButtonPanel(panel,onlistALL= self.OnListColButton, onGetSample = self.OnGetSample,size = (-1,100))
+        self.buttonpnl = ButtonPanel(panel,onlistALL= self.OnListColButton, onGetSample = self.OnGetSample, onCombine= self.OnCombine,size = (-1,100))
         # self.buttonpnl = BT.ButtonPanel(panel, ButtonName= 'List Column', onButtonHandlers= self.OnListColButton)
         box_h = wx.BoxSizer(wx.VERTICAL)
         box_v = wx.BoxSizer(wx.HORIZONTAL)
@@ -92,50 +92,7 @@ class AppFrame(wx.Frame):
             total_col = len(self.drop_col_dict[basename])
             textTuple = (pathname,basename,filetype,total_col)
             dropTarget.WriteTextTuple(textTuple)
-    # def OnGetSample(self,event):
-    #     currRow = self.filedropctrl.GetCurrRow()
-    #     looptoken = 0
-    #     select_path = self.filedropctrl.GetItemText(currRow,col = 0)
-    #     select_name = self.filedropctrl.GetItemText(currRow,col = 1)
-    #     os.chdir(select_path)
-    #     if self.select_col == None:
-    #         self.col_dict = {}
-    #         looptoken = 0
-    #         with open(select_name) as Sample:
-    #             for line in Sample:
-    #                 print(looptoken * 1)
-    #                 looptoken = looptoken + 1
-    #                 print(looptoken * 2)
-    #                 if looptoken == 1:
-    #                     column_list = line.split('\t')
-    #                     self.col_dict.fromkeys(column_list)
-    #                     continue
-    #                 value_list = line.split('\t')
-    #                 for i in range(len(column_list)):
-    #                     self.col_dict[select_name][column_list[i]] = value_list[i]
-    #                 if looptoken == 100:
-    #                     break
-    #     else:
-    #         self.col_dict = {}
-    #         looptoken = 0
-    #         with open(select_name) as Sample:
-    #             for line in Sample:
-    #                 print(looptoken * 3)
-    #                 looptoken = looptoken + 1
-    #                 print(looptoken * 4)
-    #                 if looptoken == 1:
-    #                     column_list = line.split('\t')
-    #                     self.col_dict.fromkeys(self.select_col)
-    #                     continue
-    #                 value_list = line.split('\t')
-    #                 for i in range(len(self.select_col)):
-    #                     self.col_dict[self.select_col[i]] = value_list[self.select_index[i]]
-    #                 if looptoken == 100:
-    #                     break
-    #     column_list = list(self.col_dict.keys())
-    #     print(column_list,self.col_dict)
-    #     preview_frame = Preview.MainFrame(column_list, self.col_dict)
-    #     preview_frame.Show()
+    
     def OnGetSample(self, event):
 
         currRow = self.filedropctrl.GetCurrRow()
@@ -183,18 +140,9 @@ class AppFrame(wx.Frame):
         except OSError as e:
             print(e)
             self.Warn('You should select one row or drag one file at least')
-                        
 
-            # with open(select_name) as Sample:
-            #     for line in Sample:
-            #         looptoken = looptoken + 1 
-            #         if looptoken == 1:
-            #             column_list = line.split('\t')
-            #             continue
-            #         for filename, col_name in enumerate(self.)
-                    
-                    
-        # pass
+    def OnCombine(self,event):
+        pass             
 
 
 
@@ -222,15 +170,17 @@ class AppFrame(wx.Frame):
 
 class ButtonPanel(wx.Panel):
 
-    def __init__(self,parent = None, id = -1, onlistALL = None, onGetSample = None,size = wx.DefaultSize,style = wx.DEFAULT_FRAME_STYLE):
+    def __init__(self,parent = None, id = -1, onlistALL = None, onGetSample = None,onCombine = None,size = wx.DefaultSize,style = wx.DEFAULT_FRAME_STYLE):
 
         super(ButtonPanel, self).__init__(parent = parent , id = id,size = size, style = style)
 
         listALL = wx.Button(self,-1,'List Columns')
         GetSample = wx.Button(self,-1,'Get Sample')
+        Combine = wx.Button(self,-1,'Combine')
 
         listALL.Bind(wx.EVT_LEFT_DOWN, onlistALL)
         GetSample.Bind(wx.EVT_LEFT_DOWN, onGetSample)
+        Combine.Bind(wx.EVT_LEFT_DOWN, onCombine)
 
 
         btn_vert = wx.BoxSizer(wx.VERTICAL)
@@ -238,6 +188,8 @@ class ButtonPanel(wx.Panel):
         btn_vert.Add(listALL)
         btn_vert.AddSpacer(5)
         btn_vert.Add(GetSample)
+        btn_vert.AddSpacer(5)
+        btn_vert.Add(Combine)
         btn_vert.AddSpacer(5)
 
         btn_horz = wx.BoxSizer(wx.HORIZONTAL)
