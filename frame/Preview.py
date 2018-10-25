@@ -37,10 +37,13 @@ class GridPanel(wx.Panel):
         for i in range(len(column_list)):
             MyGrid.SetColLabelValue(i,column_list[i])
             MyGrid.AutoSizeColLabelSize(i)
-            for value in col_dict[column_list[i]]:
+            value_list = col_dict[column_list[i]]
+            for row in range(len(value_list)):
+                MyGrid.SetCellValue(row,i,value_list[row])
+            # for value in col_dict[column_list[i]]:
                 
-                row = col_dict[column_list[i]].index(value)
-                MyGrid.SetCellValue(row,i,value)
+            #     row = col_dict[column_list[i]].index(value)
+            #     MyGrid.SetCellValue(row,i,value)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(MyGrid, 0, wx.EXPAND)
