@@ -85,7 +85,7 @@ class AppFrame(wx.Frame):
         pathname_list = filenameDropDict[ 'pathname' ]
         filetype_list = filenameDropDict['filetype']
         self.drop_col_dict = filenameDropDict['col_info']
-
+        self.GetCombDict(self.drop_col_dict)
         for index in range(len(basename_list)):
             basename = basename_list[index]
             pathname = pathname_list[index]
@@ -96,7 +96,8 @@ class AppFrame(wx.Frame):
 
     def GetCombDict(self,drop_col_dict):
         # if self.dict_combination =={}:
-        pass
+        self.dict_combination.update(drop_col_dict)
+        return self.dict_combination
 
     
     def OnGetSample(self, event):
