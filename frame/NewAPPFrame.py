@@ -69,10 +69,16 @@ class AppFrame(wx.Frame):
         self.Show()
     # def OnColInfo(self,col_info):
     def OnListen(self,index,select_index,select_col):
-    
+        select_dict = {}
         self.filedropctrl.SetItem(index,3,str(len(select_col)))
         self.select_col = select_col
         self.select_index = select_index
+        file_name = self.filedropctrl.GetItemText(index,col = 1)
+        select_dict[file_name] = {}
+        select_dict[file_name] = select_dict[file_name].fromkeys(self.select_col)
+        self.UpdateComDict(select_dict)
+        print(self.dict_combination)
+
 
 
     def OnFilesDropped(self, filenameDropDict):
@@ -94,9 +100,14 @@ class AppFrame(wx.Frame):
             textTuple = (pathname,basename,filetype,total_col)
             dropTarget.WriteTextTuple(textTuple)
 
+    def UpdateComDict(self,col_info):
+        self.dict_combination.update(col_info)
+
+
     def GetCombDict(self,drop_col_dict):
         # if self.dict_combination =={}:
         self.dict_combination.update(drop_col_dict)
+        print(self.dict_combination)
         return self.dict_combination
 
     
