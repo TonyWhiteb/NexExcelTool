@@ -23,4 +23,19 @@ os.chdir('E:\Sample Data')
 # with open('00_0683828_D06_LDAP_INFO.full.convert.errors') as afile:
 #     for line in afile:
         
-test = {'a': []}
+test = {'a': {'aa':None,'aaa':None},'b':{'bb':None}}
+file_name = []
+column_list = []
+column_comb = []
+# for key,value in test.items(:
+#     print(key)
+#     print(value)
+for key,value in test.items():
+    item = []
+    file_name.append(key)
+    for i in value:
+        column_comb.append(i)
+        item.append(i)
+    column_list.append(item)
+
+print(file_name,column_comb,column_list)

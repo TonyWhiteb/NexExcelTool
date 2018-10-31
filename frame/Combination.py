@@ -32,8 +32,9 @@ class GridPanel(wx.Panel):
         """Constructor"""
         wx.Panel.__init__(self, parent=parent)
         print(file_dict)
-        # NumOfRows = 100
+        NumOfRows = 100
         # column_list = 
+        file_name, col_list, col_comb = 
         MyGrid=grid.Grid(self)
         # MyGrid.CreateGrid(NumOfRows,len(column_list))
         # for i in range(len(column_list)):
@@ -50,7 +51,18 @@ class GridPanel(wx.Panel):
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(MyGrid, 0, wx.EXPAND)
         self.SetSizer(sizer)
-    
+    def DictRefactory(self,file_dict):
+        file_name = []
+        col_list = []
+        col_comb = []
+        for key,value in file_dict.items():
+            item = []
+            file_name.append(key)
+            for v in value:
+                col_comb.append(v)
+                item.append(v)
+            col_list.append(item)
+        return file_name,col_list,col_comb
 
 
 

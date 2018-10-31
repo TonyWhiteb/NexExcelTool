@@ -160,7 +160,7 @@ class AppFrame(wx.Frame):
             self.Warn('You should select one row or drag one file at least')
 
     def OnCombine(self,event):
-        combination_frame = Combination.MainFrame(self.col_dict)
+        combination_frame = Combination.MainFrame(self.dict_combination)
         combination_frame.Show()
         pass             
 
