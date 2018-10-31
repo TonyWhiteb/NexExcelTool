@@ -7,6 +7,7 @@ from BasicClass import Button as BT
 from BasicClass import PanelTemp as PT
 from frame import NewListFrame as NLF
 from frame import Preview 
+from frame import Combination
 from TEST import test
 
 from collections import defaultdict
@@ -159,8 +160,36 @@ class AppFrame(wx.Frame):
             self.Warn('You should select one row or drag one file at least')
 
     def OnCombine(self,event):
-        
+        combination_frame = Combination.MainFrame(self.col_dict)
+        combination_frame.Show()
         pass             
+
+    def DataSlicer(self,file_dict):
+        # CheckNum = self.CheckNum(file_dict)
+        # if CheckNum = False:
+        #     pass
+        # elif CheckNum = True & 
+        pass
+
+            
+
+
+    def CheckNum(self,file_dict):
+        CheckNum = True
+        for afile in file_dict:
+            num_lines = sum(1 for line in open(afile))
+            if num_lines > 1048577:
+                self.Warn('This file exceed  excel maximum')
+                CheckNum = False
+            else:
+                total_num = total_num + num_lines
+
+        if total_num > 1048577:
+            self.Warn('total data of these files exceed excel maximum')
+            CheckNum = False
+        else:
+            CheckNum = True
+        return CheckNum
 
 
 
