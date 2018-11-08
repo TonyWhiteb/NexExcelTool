@@ -13,6 +13,7 @@ class DropTarget(wx.FileDropTarget):
         basename_list = []
         filetype_list = []
         col_dict = {}
+        dict_col = {}
         for aPath in pathList :
             pathname, aBasename = os.path.split(aPath)
             namelist = aBasename.split('.')
@@ -23,7 +24,6 @@ class DropTarget(wx.FileDropTarget):
             os.chdir(pathname)
             if filetype == 'errors':
 
-                col_info = []
                 with open(aBasename) as afile:
                     for line in afile:
                         col_info= {}
@@ -34,7 +34,8 @@ class DropTarget(wx.FileDropTarget):
             path_list.append(pathname)
             basename_list.append(aBasename)
             filetype_list.append(filetype)
-            col_dict[aBasename] = col_info
+            dict_col[aBasename] = col_info
+            col_dict[pathname] = dict_col
 
         filenameDropDict = {}
         filenameDropDict['coord'] = (xOrd,yOrd)

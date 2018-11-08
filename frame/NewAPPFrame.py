@@ -74,10 +74,11 @@ class AppFrame(wx.Frame):
         self.filedropctrl.SetItem(index,3,str(len(select_col)))
         self.select_col = select_col
         self.select_index = select_index
+        aPath = self.filedropctrl.GetItemText(index, col = 0)
         file_name = self.filedropctrl.GetItemText(index,col = 1)
         select_dict[file_name] = {}
         select_dict[file_name] = select_dict[file_name].fromkeys(self.select_col)
-        self.UpdateComDict(select_dict)
+        self.UpdateComDict(aPath,select_dict)
 
 
 
@@ -85,30 +86,51 @@ class AppFrame(wx.Frame):
     def OnFilesDropped(self, filenameDropDict):
        
         dropTarget = self.filedropctrl
-        
+        # self.previous_drop = {}
         dropCoord = filenameDropDict[ 'coord' ]                 # Not used as yet.
         pathList = filenameDropDict[ 'pathList' ]
         basename_list = filenameDropDict[ 'basenameList' ]     # leaf folders, not basenames !
         pathname_list = filenameDropDict[ 'pathname' ]
         filetype_list = filenameDropDict['filetype']
         self.drop_col_dict = filenameDropDict['col_info']
+        # print(pathList)
+        # print(self.drop_col_dict)
         self.GetCombDict(self.drop_col_dict)
         for index in range(len(basename_list)):
             basename = basename_list[index]
             pathname = pathname_list[index]
             filetype = filetype_list[index]
-            total_col = len(self.drop_col_dict[basename])
+            total_col = len(self.drop_col_dict[pathname][basename])
             textTuple = (pathname,basename,filetype,total_col)
             dropTarget.WriteTextTuple(textTuple)
 
-    def UpdateComDict(self,col_info):
-        self.dict_combination.update(col_info)
+    def UpdateComDict(self,aPath,col_dict):
+        self.dict_combination[aPath].update(col_dict)
+        print(self.dict_combination)
 
 
     def GetCombDict(self,drop_col_dict):
-        # if self.dict_combination =={}:
-        self.dict_combination.update(drop_col_dict)
-        return self.dict_combination
+
+        for aPath,filedict in drop_col_dict.items():
+            x = self.dict_combination.get(aPath,None)
+            for filename in filedict:
+                
+                if x == None:
+                    self.dict_combination[aPath] = drop_col_dict[aPath]
+                else:
+                    try:
+                        self.dict_combination[aPath][filename].update(drop_col_dict[aPath][filename])
+                    except KeyError:
+                        self.dict_combination[aPath][filename] = drop_col_dict[aPath][filename]
+
+        # try:
+        #     self.dict_combination
+        # # if self.dict_combination =={}:
+        # # for aPath,file_dict in drop_col_dict.items():
+        # #     self.dict_combination[aPath].update(file_dict)
+
+        # self.dict_combination.update(drop_col_dict) 
+        # return self.dict_combination 
 
     
     def OnGetSample(self, event):
@@ -202,7 +224,7 @@ class AppFrame(wx.Frame):
             select_path = self.filedropctrl.GetItemText(currRow,col = 0)
             select_name = self.filedropctrl.GetItemText(currRow,col = 1)
             select_type = self.filedropctrl.GetItemText(currRow,col = 2)
-            col_info = self.drop_col_dict[select_name]
+            col_info = self.dict_combination[select_path][select_name]
             ListCol_frame = NLF.NewListFrame(currRow,select_name,col_info,self.file_path)
             ListCol_frame.Show()
         except TypeError:
@@ -213,7 +235,7 @@ class AppFrame(wx.Frame):
     def Warn(self, message, caption = 'Warning!'):
         dlg = wx.MessageDialog(self, message, caption, wx.OK | wx.ICON_WARNING)
         dlg.ShowModal()
-        dlg.Destroy() 
+        dlg.Destroy()  
 
 class ButtonPanel(wx.Panel):
 

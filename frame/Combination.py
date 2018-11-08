@@ -33,36 +33,45 @@ class GridPanel(wx.Panel):
         wx.Panel.__init__(self, parent=parent)
         print(file_dict)
         NumOfRows = 100
-        # column_list = 
-        file_name, col_list, col_comb = 
+        file_name, col_list, col_comb, file_list = self.DictRefactory(file_dict)
+        print(file_name,col_comb,col_list,file_list)
         MyGrid=grid.Grid(self)
-        # MyGrid.CreateGrid(NumOfRows,len(column_list))
-        # for i in range(len(column_list)):
-        #     MyGrid.SetColLabelValue(i,column_list[i])
-        #     MyGrid.AutoSizeColLabelSize(i)
-        #     value_list = file_dict[column_list[i]]
-        #     for row in range(len(value_list)):
-        #         MyGrid.SetCellValue(row,i,value_list[row])
-            # for value in file_dict[column_list[i]]:
+        MyGrid.CreateGrid(NumOfRows,len(col_comb))
+        for i in range(len(col_comb)):
+            MyGrid.SetColLabelValue(i,col_comb[i])
+            MyGrid.AutoSizeColLabelSize(i)
+            # value_list = file_dict[col_comb[i]]
+            # for row in range(len(value_list)):
+            #     MyGrid.SetCellValue(row,i,value_list[row])
+            # for value in file_dict[col_comb[i]]:
                 
-            #     row = file_dict[column_list[i]].index(value)
+            #     row = file_dict[col_comb[i]].index(value)
             #     MyGrid.SetCellValue(row,i,value)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(MyGrid, 0, wx.EXPAND)
         self.SetSizer(sizer)
     def DictRefactory(self,file_dict):
+        aPath = []
         file_name = []
+        file_list = []
         col_list = []
         col_comb = []
         for key,value in file_dict.items():
-            item = []
-            file_name.append(key)
-            for v in value:
-                col_comb.append(v)
-                item.append(v)
-            col_list.append(item)
-        return file_name,col_list,col_comb
+            aPath_item = []
+            aPath.append(key)
+            for afile,col in value.items():
+                item = []
+                file_name.append(afile)
+                aPath_item.append(afile)
+                for c in col:
+                    col_comb.append(c)
+                    item.append(c)
+        col_list.append(item)
+        col_comb = list(set(col_comb))
+        file_list.append(aPath_item)
+        
+        return file_name,col_list,col_comb,file_list
 
 
 
