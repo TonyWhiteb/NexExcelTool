@@ -1,6 +1,9 @@
+import sys,os
 import wx
 import wx.grid as grid
-
+import pandas as pd
+from pandas import ExcelWriter
+from operator import itemgetter
 class ButtonPanel(wx.Panel):
     """"""
 
@@ -33,8 +36,9 @@ class GridPanel(wx.Panel):
         wx.Panel.__init__(self, parent=parent)
         print(file_dict)
         NumOfRows = 100
-        file_name, col_list, col_comb, file_list = self.DictRefactory(file_dict)
-        print(file_name,col_comb,col_list,file_list)
+        aPath,file_name, col_list, col_comb, file_list,col_index = self.DictRefactory(file_dict)
+        # print(aPath,file_name,col_comb,col_list,file_list,col_index)
+        Sample_Dict = self.GetSampleData(aPath,file_name,file_list,col_list,col_index,col_comb)
         MyGrid=grid.Grid(self)
         MyGrid.CreateGrid(NumOfRows,len(col_comb))
         for i in range(len(col_comb)):
@@ -51,27 +55,72 @@ class GridPanel(wx.Panel):
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(MyGrid, 0, wx.EXPAND)
         self.SetSizer(sizer)
+    def GetSampleData(self,aPath,file_name,file_list,col_list,col_index,col_comb):
+        # self.Sample_dict = pd.DataFrame(columns = )
+        df_final = pd.DataFrame(columns = col_comb)
+        df_dict = {}
+        # df_dict = df_dict.fromkeys(col_comb)
+        NumOfRows = int(100/len(file_name))
+        for aPath_index in range(len(aPath)):
+            os.chdir(aPath[aPath_index])
+        
+            for afile_index in range(len(file_list[aPath_index])):
+
+                looptoken = 0
+                with open(file_name[afile_index]) as Sample:
+                    for line in Sample:
+                        
+                        if looptoken ==0:
+                            # df = pd.DataFrame(columns = col_list[afile_index])
+                            df_dict = df_dict.fromkeys(col_list[afile_index])
+                            looptoken = looptoken +1
+                            continue
+                        value_list = line.split('\t')
+                        df_list = itemgetter(*col_index[afile_index])(value_list)
+                        for i in range(len(col_list[afile_index])):
+                            if df_dict[col_list[afile_index][i]] == None:
+                                df_dict[col_list[afile_index][i]] = []
+                            df_dict[col_list[afile_index][i]].append(df_list[i])
+    
+                        looptoken = looptoken +1
+                        if looptoken == NumOfRows:
+                            break
+                    df = pd.DataFrame.from_dict(df_dict)
+                df_final = df_final.append(df)
+        df_final=df_final.reset_index(drop = True)
+        sample_dict = df_final.to_dict()
+        return sample_dict
+
+                    
+
+
+
+        pass
     def DictRefactory(self,file_dict):
         aPath = []
         file_name = []
         file_list = []
         col_list = []
         col_comb = []
+        col_index = []
         for key,value in file_dict.items():
             aPath_item = []
             aPath.append(key)
             for afile,col in value.items():
                 item = []
+                item_index = []
                 file_name.append(afile)
                 aPath_item.append(afile)
-                for c in col:
+                for c,index in col.items():
                     col_comb.append(c)
                     item.append(c)
-        col_list.append(item)
+                    item_index.append(index)
+                col_list.append(item)
+                col_index.append(item_index)
         col_comb = list(set(col_comb))
         file_list.append(aPath_item)
         
-        return file_name,col_list,col_comb,file_list
+        return aPath,file_name,col_list,col_comb,file_list,col_index
 
 
 

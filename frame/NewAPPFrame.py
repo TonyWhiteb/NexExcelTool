@@ -78,6 +78,8 @@ class AppFrame(wx.Frame):
         file_name = self.filedropctrl.GetItemText(index,col = 1)
         select_dict[file_name] = {}
         select_dict[file_name] = select_dict[file_name].fromkeys(self.select_col)
+        for i in range(len(self.select_col)):
+            select_dict[file_name][self.select_col[i]] = self.select_index[i]
         self.UpdateComDict(aPath,select_dict)
 
 
@@ -182,6 +184,7 @@ class AppFrame(wx.Frame):
             self.Warn('You should select one row or drag one file at least')
 
     def OnCombine(self,event):
+
         combination_frame = Combination.MainFrame(self.dict_combination)
         combination_frame.Show()
         pass             
