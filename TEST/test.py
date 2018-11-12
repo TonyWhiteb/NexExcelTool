@@ -74,27 +74,6 @@ test = {'c': {'a': {'aa':None,'aaa':None}},'d':{'b':{'bb':None}}}
 # print(df)
 
 
-# s2 = pd.Series([7, 8, 9])
-d = {'A': [1, 2], 'C': [3, 4]}
-df_f = pd.DataFrame(data=d)
-df = pd.DataFrame(  columns =  ["A", "B", "C"])
-# df_f = pd.DataFrame([1,3],columns = ['A','C'])
-# print(df_f)
-# df.loc[-1] = [7, 3, 4]  # adding a row
-# df.index = df.index + 1  # shifting index
-# df = df.sort_index()
-
-a = 0
-
-while a <=5:
-    
-    if a ==0:
-        print(a)
-        a = a +1
-        continue
-    df.loc[a-1] = [a,a+1,a+2]
-    a = a +1
-
-df_f =df_f.append(df)
-print('df:')
-print(df_f)
+a= {1:'a',2:'b'}
+for row in a:
+    print(a[row])

@@ -39,17 +39,19 @@ class GridPanel(wx.Panel):
         aPath,file_name, col_list, col_comb, file_list,col_index = self.DictRefactory(file_dict)
         # print(aPath,file_name,col_comb,col_list,file_list,col_index)
         Sample_Dict = self.GetSampleData(aPath,file_name,file_list,col_list,col_index,col_comb)
+        print(Sample_Dict)
+        print(col_comb)
         MyGrid=grid.Grid(self)
         MyGrid.CreateGrid(NumOfRows,len(col_comb))
         for i in range(len(col_comb)):
             MyGrid.SetColLabelValue(i,col_comb[i])
             MyGrid.AutoSizeColLabelSize(i)
-            # value_list = file_dict[col_comb[i]]
-            # for row in range(len(value_list)):
-            #     MyGrid.SetCellValue(row,i,value_list[row])
-            # for value in file_dict[col_comb[i]]:
+            value_list = Sample_Dict[col_comb[i]]
+            for row in value_list:
+                MyGrid.SetCellValue(row,i,str(value_list[row]))
+            # for value in Sample_Dict[col_comb[i]]:
                 
-            #     row = file_dict[col_comb[i]].index(value)
+            #     row = Sample_Dict[col_comb[i]].index(value)
             #     MyGrid.SetCellValue(row,i,value)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -92,10 +94,6 @@ class GridPanel(wx.Panel):
         return sample_dict
 
                     
-
-
-
-        pass
     def DictRefactory(self,file_dict):
         aPath = []
         file_name = []
