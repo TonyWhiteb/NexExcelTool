@@ -34,9 +34,9 @@ class GridPanel(wx.Panel):
         """Constructor"""
         wx.Panel.__init__(self, parent=parent)
         NumOfRows = 100
-        # aPath,file_name, col_list, col_comb, file_list,col_index = self.DictRefactory(file_dict)
-        # # print(aPath,file_name,col_comb,col_list,file_list,col_index)
-        # Sample_Dict = self.GetSampleData(aPath,file_name,file_list,col_list,col_index,col_comb)
+        # aPath,file_name, col_dict, col_comb, file_list,col_index = self.DictRefactory(file_dict)
+        # # print(aPath,file_name,col_comb,col_dict,file_list,col_index)
+        # Sample_Dict = self.GetSampleData(aPath,file_name,file_list,col_dict,col_index,col_comb)
         # print(Sample_Dict)
         # print(col_comb)
         MyGrid=grid.Grid(self)
@@ -55,7 +55,7 @@ class GridPanel(wx.Panel):
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(MyGrid, 0, wx.EXPAND)
         self.SetSizer(sizer)
-    # def GetSampleData(self,aPath,file_name,file_list,col_list,col_index,col_comb):
+    # def GetSampleData(self,aPath,file_name,file_list,col_dict,col_index,col_comb):
     #     # self.Sample_dict = pd.DataFrame(columns = )
     #     df_final = pd.DataFrame(columns = col_comb)
     #     df_dict = {}
@@ -71,16 +71,16 @@ class GridPanel(wx.Panel):
     #                 for line in Sample:
                         
     #                     if looptoken ==0:
-    #                         # df = pd.DataFrame(columns = col_list[aPath_index])
-    #                         df_dict = df_dict.fromkeys(col_list[aPath_index])
+    #                         # df = pd.DataFrame(columns = col_dict[file_list[aPath_index][afile_index]])
+    #                         df_dict = df_dict.fromkeys(col_dict[file_list[aPath_index][afile_index]])
     #                         looptoken = looptoken +1
     #                         continue
     #                     value_list = line.split('\t')
     #                     df_list = itemgetter(*col_index[afile_index])(value_list)
-    #                     for i in range(len(col_list[aPath_index])):
-    #                         if df_dict[col_list[aPath_index][i]] == None:
-    #                             df_dict[col_list[aPath_index][i]] = []
-    #                         df_dict[col_list[aPath_index][i]].append(df_list[i])
+    #                     for i in range(len(col_dict[file_list[aPath_index][afile_index]])):
+    #                         if df_dict[col_dict[file_list[aPath_index][afile_index]][i]] == None:
+    #                             df_dict[col_dict[file_list[aPath_index][afile_index]][i]] = []
+    #                         df_dict[col_dict[file_list[aPath_index][afile_index]][i]].append(df_list[i])
     
     #                     looptoken = looptoken +1
     #                     if looptoken == NumOfRows:
@@ -96,7 +96,7 @@ class GridPanel(wx.Panel):
     #     aPath = []
     #     file_name = []
     #     file_list = []
-    #     col_list = []
+    #     col_dict = []
     #     col_comb = []
     #     col_index = []
     #     for key,value in file_dict.items():
@@ -111,12 +111,12 @@ class GridPanel(wx.Panel):
     #                 col_comb.append(c)
     #                 item.append(c)
     #                 item_index.append(index)
-    #             col_list.append(item)
+    #             col_dict.append(item)
     #             col_index.append(item_index)
     #     col_comb = list(set(col_comb))
     #     file_list.append(aPath_item)
         
-    #     return aPath,file_name,col_list,col_comb,file_list,col_index
+    #     return aPath,file_name,col_dict,col_comb,file_list,col_index
 
 
 
@@ -129,9 +129,9 @@ class MainFrame(wx.Frame):
         wx.Frame.__init__(self,None,title="Preview", size=(800,600))
         self.file_dict = file_dict
         # print(self.file_dict)
-        aPath,file_name, col_list, col_comb, file_list,col_index,total = self.DictRefactory(file_dict)
-        # print(aPath,file_name,col_comb,col_list,file_list,col_index,total)
-        Sample_Dict = self.GetSampleData(aPath,file_name,file_list,col_list,col_index,col_comb)
+        aPath,file_name, col_dict, col_comb, file_list,col_index,total = self.DictRefactory(file_dict)
+        # print(aPath,file_name,col_comb,col_dict,file_list,col_index,total)
+        Sample_Dict = self.GetSampleData(aPath,file_name,file_list,col_dict,col_index,col_comb)
         panel = wx.Panel(self,-1)
         self.btn_pnl = ButtonPanel(panel,onButton= self.onButton)
         self.grid_pnl = GridPanel(panel,Sample_Dict,col_comb)
@@ -162,7 +162,7 @@ class MainFrame(wx.Frame):
         aPath = []
         file_name = []
         file_list = []
-        col_list = []
+        col_dict = {}
         col_comb = []
         col_index = []
         total = 0
@@ -178,7 +178,7 @@ class MainFrame(wx.Frame):
                     col_comb.append(c)
                     item.append(c)
                     item_index.append(index)
-                col_list.append(item)
+                col_dict[afile] = item
                 col_index.append(item_index)
             file_list.append(aPath_item)
         col_comb = list(set(col_comb))
@@ -192,8 +192,8 @@ class MainFrame(wx.Frame):
                 aPath_total = afile_total + aPath_total
             total = total + aPath_total
         
-        return aPath,file_name,col_list,col_comb,file_list,col_index,total
-    def GetSampleData(self,aPath,file_name,file_list,col_list,col_index,col_comb):
+        return aPath,file_name,col_dict,col_comb,file_list,col_index,total
+    def GetSampleData(self,aPath,file_name,file_list,col_dict,col_index,col_comb):
         # self.Sample_dict = pd.DataFrame(columns = )
         df_final = pd.DataFrame(columns = col_comb)
         df_dict = {}
@@ -207,21 +207,21 @@ class MainFrame(wx.Frame):
                 df_dict = {}
                 looptoken = 0
                 with open(file_list[aPath_index][afile_index]) as Sample:
-                    print(col_list[aPath_index])
+                    print(col_dict)
                     for line in Sample:
                         
                         if looptoken ==0:
-                            # df = pd.DataFrame(columns = col_list[aPath_index])
-                            df_dict = df_dict.fromkeys(col_list[aPath_index])
+                            # df = pd.DataFrame(columns = col_dict[file_list[aPath_index][afile_index]])
+                            df_dict = df_dict.fromkeys(col_dict[file_list[aPath_index][afile_index]])
 
                             looptoken = looptoken +1
                             continue
                         value_list = line.split('\t')
                         df_list = itemgetter(*col_index[afile_index])(value_list)
-                        for i in range(len(col_list[aPath_index])):
-                            if df_dict[col_list[aPath_index][i]] == None:
-                                df_dict[col_list[aPath_index][i]] = []
-                            df_dict[col_list[aPath_index][i]].append(df_list[i])
+                        for i in range(len(col_dict[file_list[aPath_index][afile_index]])):
+                            if df_dict[col_dict[file_list[aPath_index][afile_index]][i]] == None:
+                                df_dict[col_dict[file_list[aPath_index][afile_index]][i]] = []
+                            df_dict[col_dict[file_list[aPath_index][afile_index]][i]].append(df_list[i])
     
                         looptoken = looptoken +1
                         if looptoken == NumOfRows:
