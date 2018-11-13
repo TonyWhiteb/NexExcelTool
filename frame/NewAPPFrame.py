@@ -108,7 +108,7 @@ class AppFrame(wx.Frame):
 
     def UpdateComDict(self,aPath,col_dict):
         self.dict_combination[aPath].update(col_dict)
-        print(self.dict_combination)
+        # print(self.dict_combination)
 
 
     def GetCombDict(self,drop_col_dict):
