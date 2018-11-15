@@ -129,12 +129,11 @@ class MainFrame(wx.Frame):
         wx.Frame.__init__(self,None,title="Preview", size=(800,600))
         self.file_dict = file_dict
         # print(self.file_dict)
-        aPath,file_name, col_dict, col_comb, file_list,col_index,total = self.DictRefactory(file_dict)
-        # print(aPath,file_name,col_comb,col_dict,file_list,col_index,total)
-        Sample_Dict = self.GetSampleData(aPath,file_name,file_list,col_dict,col_index,col_comb)
+        self.aPath,self.file_name, self.col_dict, self.col_comb, self.file_list,self.col_index,self.total = self.DictRefactory(file_dict)
+        Sample_Dict = self.GetSampleData(self.aPath,self.file_name,self.file_list,self.col_dict,self.col_index,self.col_comb)
         panel = wx.Panel(self,-1)
         self.btn_pnl = ButtonPanel(panel,onButton= self.onButton)
-        self.grid_pnl = GridPanel(panel,Sample_Dict,col_comb)
+        self.grid_pnl = GridPanel(panel,Sample_Dict,self.col_comb)
 
         box_h = wx.BoxSizer(wx.VERTICAL)
         box_v = wx.BoxSizer(wx.HORIZONTAL)
@@ -151,13 +150,73 @@ class MainFrame(wx.Frame):
         panel.Fit()
         self.Centre()
     def onButton(self,event):
-        pass
-    def TotalLines(self):
-        pass
-    # def AddPanel(self):
-    #     self.newPanel = ButtonPanel(self, 1, 1)
-    #     self.sizer.Add(self.newPanel, 1, wx.EXPAND)
-    #     self.sizer.Layout()
+        currentDirctory = os.getcwd()
+        Final, Slicer, multi = self.DataSlicer(self.total)
+        dlg = wx.FileDialog(
+            self, message = 'Save File As',
+            defaultDir = currentDirctory,
+            defaultFile = "", wildcard = "Excel files (*.xlsx)|*.xlsx",
+            style = wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT
+
+        )
+        if dlg.ShowModal() == wx.ID_OK:
+            SaveFileName = dlg.GetFilename()
+            path = dlg.GetPath()
+            if multi == False:
+                df = self.ErrorSave()
+                writer = ExcelWriter(SaveFileName)
+                df.to_excel(writer,'Sheet1',index = False)
+                writer.save()
+
+
+        # pass
+    def ErrorSave(self):
+        df_final = pd.DataFrame(columns = self.col_comb)
+        df_dict = {}
+        for aPath_index in range(len(self.aPath)):
+            os.chdir(self.aPath[aPath_index])
+            for afile_index in range(len(self.file_list[aPath_index])):
+
+                df_dict = {}
+                looptoken = 0
+                with open(self.file_list[aPath_index][afile_index]) as Sample:
+                    # print(col_dict)
+                    for line in Sample:
+                        
+                        if looptoken ==0:
+                            # df = pd.DataFrame(columns = col_dict[file_list[aPath_index][afile_index]])
+                            df_dict = df_dict.fromkeys(self.col_dict[self.file_list[aPath_index][afile_index]])
+                            looptoken = looptoken +1
+                            continue
+                        value_list = line.split('\t')
+                        df_list = itemgetter(*self.col_index[afile_index])(value_list)
+                        for i in range(len(self.col_dict[self.file_list[aPath_index][afile_index]])):
+                            if df_dict[self.col_dict[self.file_list[aPath_index][afile_index]][i]] == None:
+                                df_dict[self.col_dict[self.file_list[aPath_index][afile_index]][i]] = []
+                            df_dict[self.col_dict[self.file_list[aPath_index][afile_index]][i]].append(df_list[i])
+    
+                    df = pd.DataFrame.from_dict(df_dict)
+                df_final = df_final.append(df)
+        df_final=df_final.reset_index(drop = True)
+        return df_final
+    def DataSlicer(self,total): 
+        Slicer = 1
+        multi = False
+        if total > 1000000:
+            Slicer = int(total / 1000000) + 1
+            Final = total - (Slicer* 1000000)
+            multi = True
+        else:
+            Final = total
+
+        return Final,Slicer,multi
+
+        
+            
+
+
+
+
     def DictRefactory(self,file_dict):
         aPath = []
         file_name = []
@@ -185,12 +244,12 @@ class MainFrame(wx.Frame):
         
         for i in range(len(aPath)):
             os.chdir(aPath[i])
-            for afile in file_list[i]:
+            for afile_i in range(len(file_list[i])):
                 aPath_total = 0
-                with open(afile) as f:
-                    afile_total = sum(1 for _ in f)
-                aPath_total = afile_total + aPath_total
-            total = total + aPath_total
+                with open(file_list[i][afile_i]) as f:
+                    afile_total = sum(1 for _ in f) -1
+                    aPath_total = afile_total + aPath_total
+                total = total + aPath_total
         
         return aPath,file_name,col_dict,col_comb,file_list,col_index,total
     def GetSampleData(self,aPath,file_name,file_list,col_dict,col_index,col_comb):
@@ -201,13 +260,13 @@ class MainFrame(wx.Frame):
         NumOfRows = int(100/len(file_name))
         for aPath_index in range(len(aPath)):
             os.chdir(aPath[aPath_index])
-            print(aPath[aPath_index])
+            # print(aPath[aPath_index])
             for afile_index in range(len(file_list[aPath_index])):
-                print(file_list[aPath_index][afile_index])
+                # print(file_list[aPath_index][afile_index])
                 df_dict = {}
                 looptoken = 0
                 with open(file_list[aPath_index][afile_index]) as Sample:
-                    print(col_dict)
+                    # print(col_dict)
                     for line in Sample:
                         
                         if looptoken ==0:
@@ -230,7 +289,7 @@ class MainFrame(wx.Frame):
                 df_final = df_final.append(df)
         df_final=df_final.reset_index(drop = True)
         sample_dict = df_final.to_dict()
-        print(sample_dict)
+
         return sample_dict
 
 # if __name__ == "__main__":

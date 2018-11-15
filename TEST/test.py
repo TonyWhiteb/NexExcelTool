@@ -73,7 +73,7 @@ test = {'c': {'a': {'aa':None,'aaa':None}},'d':{'b':{'bb':None}}}
 #     df.loc[:,col] = 1
 # print(df)
 
-
-a= {1:'a',2:'b'}
-for row in a:
-    print(a[row])
+a = 100
+b = 15
+print(a/b)
+print(int(a/b))
