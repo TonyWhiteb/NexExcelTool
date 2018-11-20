@@ -167,9 +167,58 @@ class MainFrame(wx.Frame):
                 writer = ExcelWriter(SaveFileName)
                 df.to_excel(writer,'Sheet1',index = False)
                 writer.save()
+            if multi == True:
+                sheet_list = self.SheetName(Slicer)
+
 
 
         # pass
+
+    def SheetName(self,Slicer):
+        sheet_list = []
+        for i in range(Slicer):
+            sheet_list.append('Sheet%d' %int(i+1))
+        return sheet_list
+
+    def ErrorSlicer(self,Slicer,SaveFileName):
+        sheet_list = self.SheetName(Slicer)
+        for i in range(Slicer):
+            if i =! Slicer:
+                df_final = pd.DataFrame(columns = self.col_comb)
+                for aPath_index in range(len(self.aPath)):
+                    os.chdir(self.aPath[aPath_index])
+                    for afile_index in range(len(self.file_list[aPath_index])):
+
+                        df_dict = {}
+                        looptoken = 0
+                        with open(self.file_list[aPath_index][afile_index]) as Sample:
+                    # print(col_dict)
+                            for line in Sample:
+                                if looptoken ==0:
+                                    df_dict = df_dict.fromkeys(self.col_dict[self.file_list[aPath_index][afile_index]])
+                                    looptoken = looptoken +1
+                                    continue
+                                value_list = line.split('\t')
+                                df_list = itemgetter(*self.col_index[afile_index])(value_list)
+                                for i in range(len(self.col_dict[self.file_list[aPath_index][afile_index]])):
+                                    if df_dict[self.col_dict[self.file_list[aPath_index][afile_index]][i]] == None:
+                                        df_dict[self.col_dict[self.file_list[aPath_index][afile_index]][i]] = []
+                                    df_dict[self.col_dict[self.file_list[aPath_index][afile_index]][i]].append(df_list[i])
+
+                                looptoken = looptoken + 1
+                                if looptoken == 1000000:
+                                    break  
+                            df = pd.DataFrame.from_dict(df_dict)
+                        df_final = df_final.append(df)
+                df_final = df_final.reset_index(drop = True)
+                writer = ExcelWriter(SaveFileName)
+                df_final.to_excel(writer,sheet_list[i])
+                writer.save()
+            else:
+                
+
+            
+        pass
     def ErrorSave(self):
         df_final = pd.DataFrame(columns = self.col_comb)
         df_dict = {}
