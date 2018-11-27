@@ -92,35 +92,38 @@ test = {'c': {'a': {'aa':None,'aaa':None}},'d':{'b':{'bb':None}}}
 # print (b)
 os.chdir('E:\TEST')
 
-def file_block(fp, number_of_blocks, block):
+def file_pos()
+with open("test.txt") as f:
+    for line in f:
+        p = f.seek(2)
+        print(line)
+
+# def file_block(fp, number_of_blocks, block):
 
  
-    assert 0 <= block and block < number_of_blocks
-    assert 0 < number_of_blocks
+#     assert 0 <= block and block < number_of_blocks
+#     assert 0 < number_of_blocks
  
-    fp.seek(0,2)
-    file_size = fp.tell()
-    print('file_size: %s' %(file_size))
-    ini = file_size * block / number_of_blocks
-    print('ini: %s' %(ini))
-    end = file_size * (1 + block) / number_of_blocks
-    print('end: %s' %(end))
+#     fp.seek(0,2)
+#     file_size = fp.tell()
+#     print('file_size: %s' %(file_size))
+#     ini = file_size * block / number_of_blocks
+#     print('ini: %s' %(ini))
+#     end = file_size * (1 + block) / number_of_blocks
+#     print('end: %s' %(end))
  
-    if ini <= 0:
-        fp.seek(0)
-    else:
-        fp.seek(ini-1)
-        mid = fp.readline()
-        print('mid: %s' %(mid))
+#     if ini <= 0:
+#         fp.seek(0)
+#     else:
+#         fp.seek(ini-1)
+#         mid = fp.readline()
+#         print('mid: %s' %(mid))
  
-    while fp.tell() < end:
-        yield fp.readline()
+#     while fp.tell() < end:
+#         yield fp.readline()
  
-if __name__ == '__main__':
-    fp = open('test.txt')
-    number_of_chunks = 4
-    for line in file_block(fp, number_of_chunks, 0):
-        print(line)
+# if __name__ == '__main__':
+    
     # fo = open("test.txt")
     # print ("Name of the file: ", fo.name)
 

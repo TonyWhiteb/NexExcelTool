@@ -128,6 +128,7 @@ class MainFrame(wx.Frame):
         """Constructor"""
         wx.Frame.__init__(self,None,title="Preview", size=(800,600))
         self.file_dict = file_dict
+        self.count = 1000000
         # print(self.file_dict)
         self.aPath,self.file_name, self.col_dict, self.col_comb, self.file_list,self.col_index,self.total = self.DictRefactory(file_dict)
         Sample_Dict = self.GetSampleData(self.aPath,self.file_name,self.file_list,self.col_dict,self.col_index,self.col_comb)
@@ -167,8 +168,39 @@ class MainFrame(wx.Frame):
                 writer = ExcelWriter(SaveFileName)
                 df.to_excel(writer,'Sheet1',index = False)
                 writer.save()
-            if multi == True:
+            elif multi == True:
                 sheet_list = self.SheetName(Slicer)
+                for i in range(Slicer):
+                    if i =! Slicer:
+                        looptoken = (i+1) * self.count
+                        df_final = pd.DataFrame(columns = self.col_comb)
+                        for aPath_index in range(len(self.aPath)):
+                            os.chdir(self.aPath[aPath_index])
+                            for afile_index in range(len(self.file_list[aPath_index])):
+                                df_dict = {}
+                                readtoken = 0
+                                with open(self.file_list[aPath_index][afile_index]) as Sample:
+                                    for line in Sample:
+                                        if readtoken == 0 and looptoken == self.count:
+                                            df_dict = df_dict.fromkeys(self.col_dict[self.file_list[aPath_index][afile_index]])
+                                            readtoken = readtoken + 1
+                                            readend = self.count
+                                            continue
+                                        elif looptoken == Slicer * self.count:
+                                            readend = Final
+                                            continue
+                                        vaule_list = line.split('\t')
+                                        df_list = itemgetter(*self.col_index[afile_index])(value_list)
+                                        for i in range(len(self.col_dict[self.file_list[aPath_index][afile_index]])):
+                                            if df_dict[self.col_dict[self.file_list[aPath_index][afile_index]][i]] == None:
+                                                df_dict[self.col_dict[self.file_list[aPath_index][afile_index]][i]] = []
+                                            df_dict[self.col_dict[self.file_list[aPath_index][afile_index]][i]].append(df_list[i])
+                                        readtoken = readtoken + 1
+                                        if readtoken == readend:
+                                            writer = ExcelWriter(SaveFileName)
+                                            df_dict.to_excel(writer,sheet_list[i],index = False)
+                                            writer.save()
+
 
 
 
@@ -180,45 +212,45 @@ class MainFrame(wx.Frame):
             sheet_list.append('Sheet%d' %int(i+1))
         return sheet_list
 
-    def ErrorSlicer(self,Slicer,SaveFileName):
-        sheet_list = self.SheetName(Slicer)
-        for i in range(Slicer):
-            if i =! Slicer:
-                df_final = pd.DataFrame(columns = self.col_comb)
-                for aPath_index in range(len(self.aPath)):
-                    os.chdir(self.aPath[aPath_index])
-                    for afile_index in range(len(self.file_list[aPath_index])):
+    # def ErrorSlicer(self,Slicer,SaveFileName):
+    #     sheet_list = self.SheetName(Slicer)
+    #     for i in range(Slicer):
+    #         if i =! Slicer:
+    #             df_final = pd.DataFrame(columns = self.col_comb)
+    #             for aPath_index in range(len(self.aPath)):
+    #                 os.chdir(self.aPath[aPath_index])
+    #                 for afile_index in range(len(self.file_list[aPath_index])):
 
-                        df_dict = {}
-                        looptoken = 0
-                        with open(self.file_list[aPath_index][afile_index]) as Sample:
-                    # print(col_dict)
-                            for line in Sample:
-                                if looptoken ==0:
-                                    df_dict = df_dict.fromkeys(self.col_dict[self.file_list[aPath_index][afile_index]])
-                                    looptoken = looptoken +1
-                                    continue
-                                value_list = line.split('\t')
-                                df_list = itemgetter(*self.col_index[afile_index])(value_list)
-                                for i in range(len(self.col_dict[self.file_list[aPath_index][afile_index]])):
-                                    if df_dict[self.col_dict[self.file_list[aPath_index][afile_index]][i]] == None:
-                                        df_dict[self.col_dict[self.file_list[aPath_index][afile_index]][i]] = []
-                                    df_dict[self.col_dict[self.file_list[aPath_index][afile_index]][i]].append(df_list[i])
+    #                     df_dict = {}
+    #                     looptoken = 0
+    #                     with open(self.file_list[aPath_index][afile_index]) as Sample:
+    #                 # print(col_dict)
+    #                         for line in Sample:
+    #                             if looptoken ==0:
+    #                                 df_dict = df_dict.fromkeys(self.col_dict[self.file_list[aPath_index][afile_index]])
+    #                                 looptoken = looptoken +1 
+    #                                 continue
+    #                             value_list = line.split('\t')
+    #                             df_list = itemgetter(*self.col_index[afile_index])(value_list)
+    #                             for i in range(len(self.col_dict[self.file_list[aPath_index][afile_index]])):
+    #                                 if df_dict[self.col_dict[self.file_list[aPath_index][afile_index]][i]] == None:
+    #                                     df_dict[self.col_dict[self.file_list[aPath_index][afile_index]][i]] = []
+    #                                 df_dict[self.col_dict[self.file_list[aPath_index][afile_index]][i]].append(df_list[i])
 
-                                looptoken = looptoken + 1
-                                if looptoken == 1000000:
-                                    break  
-                            df = pd.DataFrame.from_dict(df_dict)
-                        df_final = df_final.append(df)
-                df_final = df_final.reset_index(drop = True)
-                writer = ExcelWriter(SaveFileName)
-                df_final.to_excel(writer,sheet_list[i])
-                writer.save()
-            else:
+    #                             looptoken = looptoken + 1
+    #                             if looptoken == self.count:
+    #                                 break  
+    #                         df = pd.DataFrame.from_dict(df_dict)
+    #                     df_final = df_final.append(df)
+    #             df_final = df_final.reset_index(drop = True)
+    #             writer = ExcelWriter(SaveFileName)
+    #             df_final.to_excel(writer,sheet_list[i])
+    #             writer.save()
+    #         else:
                 
 
             
-        pass
+    #     pass
     def ErrorSave(self):
         df_final = pd.DataFrame(columns = self.col_comb)
         df_dict = {}
@@ -251,9 +283,9 @@ class MainFrame(wx.Frame):
     def DataSlicer(self,total): 
         Slicer = 1
         multi = False
-        if total > 1000000:
-            Slicer = int(total / 1000000) + 1
-            Final = total - (Slicer* 1000000)
+        if total > self.count:
+            Slicer = int(total / self.count) + 1
+            Final = total - (Slicer* self.count)
             multi = True
         else:
             Final = total
