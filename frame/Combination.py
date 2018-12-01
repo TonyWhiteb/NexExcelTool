@@ -173,7 +173,26 @@ class MainFrame(wx.Frame):
                 df.to_excel(writer,'Sheet1',index = False)
                 writer.save()
             elif multi == True:
-            #     sheet_list = self.SheetName(Slicer)
+                sheet_list = self.SheetName(Slicer)
+                for aPath_index in range(len(self.aPath)):
+                    os.chdir(self.aPath(aPath_index))
+                    file_list = self.file_list[aPath_index]
+                    for afile_index in range(len(file_list)):
+                        df_dict = {}
+                        with open(file_list[afile_index]) as Sample:
+                            for line in Sample:
+                                value_list = line.split('\t')
+                                df_list = list(itemgetter(*self.col_index[afile_index])(value_list))
+                                if readtoken == 0:
+                                    col = df_list
+                                    df_dict = df_dict.fromkeys(col)
+                                    for i in range(len(col)):
+                                        df_dict[col[i]] = []
+                                    readend = self.count
+                                
+                                for i in range(len(col)):
+                                    df_dict[col[i]].append(df_list[i])
+                                
             #     for i in range(Slicer):
             #         if slicer != Slicer:
             #             looptoken = (slicer+1) * self.count
