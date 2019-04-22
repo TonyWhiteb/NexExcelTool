@@ -4,37 +4,9 @@ import pandas as pd
 from operator import itemgetter
 from itertools import islice
 
-test = ['a','b','c','d','e']
-test2 = ['f','g','h','i','j']
+os.chdir('E:\TEST')
 
-# for i in range(5):
-#     print(test[i])
+with open('PAYTODAT_ERROR.errors') as f:
+    test = sum(1 for _ in f )
 
-#     for j in range(5):
-#         print(test2[j])
-        
-#         for m in range(5):
-#             print(m)
-#             if  m == 3:
-#                 break
-# for i in range(5):
-#     print(test[i])
-
-#     for j in range(5):
-#         print(test2[j])
-        
-#         for m in range(5):
-#             print(m)
-#             if  m == 3:
-#                 continue
-
-for i in range(5):
-    print(test[i])
-
-    for j in range(5):
-        print(test2[j])
-        
-        for m in range(5):
-            print(m)
-            if  m == 3:
-                pass
+print(test)

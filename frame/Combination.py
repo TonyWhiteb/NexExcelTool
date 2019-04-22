@@ -152,7 +152,7 @@ class MainFrame(wx.Frame):
         self.Centre()
     def onButton(self,event):
         currentDirctory = os.getcwd()
-        Final, Slicer, multi = self.DataSlicer(self.total)
+        # Final, Slicer, multi = self.DataSlicer(self.total)
         # print('Final:%s' %(Final))
         # print('Slicer:%s' %(Slicer))
         # print('multi:%s' %(multi))
@@ -166,32 +166,90 @@ class MainFrame(wx.Frame):
         if dlg.ShowModal() == wx.ID_OK:
             SaveFileName = dlg.GetFilename()
             path = dlg.GetPath()
-            sheet_list = self.SheetName(Slicer)
-            if multi == False:
-                df = self.ErrorSave()
-                writer = ExcelWriter(SaveFileName)
-                df.to_excel(writer,'Sheet1',index = False)
-                writer.save()
-            elif multi == True:
-                sheet_list = self.SheetName(Slicer)
+            data_total = 0
+
+            if self.total > self.count:
                 for aPath_index in range(len(self.aPath)):
                     os.chdir(self.aPath(aPath_index))
                     file_list = self.file_list[aPath_index]
+
                     for afile_index in range(len(file_list)):
-                        df_dict = {}
-                        with open(file_list[afile_index]) as Sample:
-                            for line in Sample:
+                        Final, Slicer, file_total = self.FileDataSlicer(file_list[afile_list],self.aPath[aPath_index])
+                        with open(file_list[afile_list]) as f:
+                            for line in f:
                                 value_list = line.split('\t')
                                 df_list = list(itemgetter(*self.col_index[afile_index])(value_list))
-                                if readtoken == 0:
-                                    col = df_list
-                                    df_dict = df_dict.fromkeys(col)
-                                    for i in range(len(col)):
-                                        df_dict[col[i]] = []
-                                    readend = self.count
+
+            # sheet_list = self.SheetName(Slicer)
+            for aPath_index in range(len(self.aPath)):
+                    os.chdir(self.aPath(aPath_index))
+                    looptoken = 0
+                    file_list = self.file_list[aPath_index]
+
+                    for afile_index in range(len(file_list)):
+                        Final, Slicer,file_total = self.FileDataSlicer(file_list[afile_list],self.aPath[aPath_index])
+                        data_total = file_total + data_total
+                        
+                        if data_total == self.total:
+                            sheet_list = self.SheetName(Slicer)
+                            df_dict = {}
+                            with open(file_list[afile_list]) as f:
+                                readtoken = 0
+                                for line in f:
+                                    value_list = line.split('\t')
+                                    df_list = list(itemgetter(*self.col_index[afile_index])(value_list))
+                                    if readtoken == 0:
+                                        col = df_list
+                                        df_dict = df_dict.fromkeys(col)
+                                        for i in range(len(col)):
+                                            df_dict[col[i]] = []
+                                        readend = self.count
+                                    
+    def MoreDataSave(self,Slicer,Final,df_list):
+        sheet_list = self.SheetName(Slicer)
+        df_dict = {}
+
+
+
+
+
+    def FileDataSlicer(self,filename,path): 
+        os.chdir(path)
+        Slicer = 1
+        with open(filename) as f:
+            file_total = sum(1 for _ in f) -1
+        if file_total > self.count:
+            pre_slicer = int(file_total / self.count)
+            Slicer = pre_slicer +1
+            Final = file_total - (pre_slicer * self.count)
+        else:
+            Final = file_total
+        return Final,Slicer,file_total
+            # if multi == False:
+            #     df = self.ErrorSave()
+            #     writer = ExcelWriter(SaveFileName)
+            #     df.to_excel(writer,'Sheet1',index = False)
+            #     writer.save()
+            # elif multi == True:
+            #     sheet_list = self.SheetName(Slicer)
+            #     for aPath_index in range(len(self.aPath)):
+            #         os.chdir(self.aPath(aPath_index))
+            #         file_list = self.file_list[aPath_index]
+            #         for afile_index in range(len(file_list)):
+            #             df_dict = {}
+            #             with open(file_list[afile_index]) as Sample:
+            #                 for line in Sample:
+            #                     value_list = line.split('\t')
+            #                     df_list = list(itemgetter(*self.col_index[afile_index])(value_list))
+            #                     if readtoken == 0:
+            #                         col = df_list
+            #                         df_dict = df_dict.fromkeys(col)
+            #                         for i in range(len(col)):
+            #                             df_dict[col[i]] = []
+            #                         readend = self.count
                                 
-                                for i in range(len(col)):
-                                    df_dict[col[i]].append(df_list[i])
+            #                     for i in range(len(col)):
+            #                         df_dict[col[i]].append(df_list[i])
                                 
             #     for i in range(Slicer):
             #         if slicer != Slicer:
@@ -225,40 +283,6 @@ class MainFrame(wx.Frame):
             #                                 df.to_excel(writer,sheet_list[i],index = False)
             #                                 writer.save()
                                             # writer.close()
-    def multiTrue(self,path,SaveFileName,sheet_list):
-        for slicer in range(Slicer):
-            if slicer != Slicer:
-                readtoken = 0 
-                looptoken = (slicer + 1) * self.count
-                for aPath_index in range(len(self.aPath)):
-                    os.chdir(self.aPath[aPath_index])
-                    file_list = self.file_list[aPath_index]
-                    for afile_index in range(len(file_list)):
-                        df_dict = {}
-                        with open(file_list[afile_index]) as Sample:
-                            for line in Sample:
-                                value_list = line.split('\t')
-                                df_list = list(itemgetter(*self.col_index[afile_index])(value_list)))
-                                if readtoken == 0 and looptoken == self.count:
-                                    col = df_list
-                                    df_dict = df_dict.fromkeys(col)
-                                    for i in range(len(col)):
-                                        df_dict[col[i]] = []
-                                for i in range(len(col)):
-                                    df_dict[col[i]].append(df_list[i])
-        pass
-    
-    def CreateDict(self,filename,output = None):
-        if output == None:
-            output = {}
-        with open(filename) as Sample:
-            for line in Sample:
-                
-        
-
-
-
-                
 
 
 
@@ -377,18 +401,7 @@ class MainFrame(wx.Frame):
                 df_final = df_final.append(df)
         df_final=df_final.reset_index(drop = True)
         return df_final
-    def DataSlicer(self,total): 
-        Slicer = 1
-        multi = False
-        if total > self.count:
-            pre_slicer = int(total / self.count)
-            Slicer = pre_slicer + 1
-            Final = total - (pre_slicer* self.count)
-            multi = True
-        else:
-            Final = total
 
-        return Final,Slicer,multi
 
         
             
