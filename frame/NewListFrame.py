@@ -5,7 +5,7 @@ from wx.lib.pubsub import pub
 from pandas import ExcelWriter
 import  wx.lib.mixins.listctrl  as  listmix
 from BasicClass import FileCtrl as fc
-from BasicClass import Button as BT
+# from BasicClass import Button as BT
 from BasicClass import PanelTemp as PT
 
 class NewListFrame(wx.Frame):
@@ -36,7 +36,7 @@ class NewListFrame(wx.Frame):
         self.list_ctrl.SetColumnWidth(2,wx.LIST_AUTOSIZE_USEHEADER)
 
         # onButtonHandlers = self.onSelectCol
-        self.buttonpnl = BT.ButtonPanel(panel, ButtonName= 'Save Columns', onButtonHandlers= self.onSelectCol)
+        self.buttonpnl = ButtonPanel(panel, ButtonName_1= 'Save Columns', onButtonHandlers_1= self.onSelectCol, ButtonName_2= 'Select ALL', onButtonHandlers_2= self.onSelectAll)
 
         box_h = wx.BoxSizer(wx.HORIZONTAL)
         box_v = wx.BoxSizer(wx.VERTICAL)
@@ -96,6 +96,12 @@ class NewListFrame(wx.Frame):
     def Autosize(self):
         for colIndex in range(2):
             self.list_ctrl.SetColumnWidth(colIndex,wx.LIST_AUTOSIZE)
+    
+    def onSelectAll(self,event):
+
+        for col in range(self.col_num):
+
+            self.list_ctrl.CheckItem(col)
 
     def onSelectCol(self,event):
 
@@ -190,3 +196,35 @@ class ListColCtrl(fc.FileCtrl, listmix.CheckListCtrlMixin, listmix.ListCtrlAutoW
 
     def getSelected_id(self):
         return  self.selected_id
+
+
+class ButtonPanel(wx.Panel):
+
+    def __init__(self,parent = None, id = -1,ButtonName_1 = None, onButtonHandlers_1 = None, ButtonName_2 = None, onButtonHandlers_2 = None):
+
+        super(ButtonPanel, self).__init__(parent = parent , id = id)
+        
+        # pub.subscribe(self.OnListen, 'GetSelectCol')
+
+        Button_1 = wx.Button(self,-1,ButtonName_1)
+        Button_2 = wx.Button(self,-1,ButtonName_2)
+
+        Button_1.Bind(wx.EVT_LEFT_DOWN, onButtonHandlers_1)
+        Button_2.Bind(wx.EVT_LEFT_DOWN, onButtonHandlers_2)
+
+        btnPanel_innerHorzSzr = wx.BoxSizer( wx.HORIZONTAL )
+        btnPanel_innerHorzSzr.AddStretchSpacer( prop=1 )
+        btnPanel_innerHorzSzr.Add(Button_1)
+        btnPanel_innerHorzSzr.AddSpacer( 25 )
+        btnPanel_innerHorzSzr.Add(Button_2)
+        btnPanel_innerHorzSzr.AddSpacer( 25 )
+
+        btnPanel_innerHorzSzr.AddStretchSpacer( prop=1 )
+
+        btnPanel_outerVertSzr = wx.BoxSizer( wx.VERTICAL )
+        btnPanel_outerVertSzr.AddSpacer( 5 )
+        btnPanel_outerVertSzr.Add( btnPanel_innerHorzSzr, flag=wx.EXPAND )
+        btnPanel_outerVertSzr.AddSpacer( 5 )
+
+        self.SetSizer( btnPanel_outerVertSzr )
+        self.Layout()

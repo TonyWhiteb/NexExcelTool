@@ -3,7 +3,7 @@ import wx
 
 from BasicClass import DropTarget as DT
 from BasicClass import FileCtrl as FC
-from BasicClass import Button as BT
+# from BasicClass import Button as BT
 from BasicClass import PanelTemp as PT
 from frame import NewListFrame as NLF
 
@@ -47,7 +47,7 @@ class AppFrame(wx.Frame):
 
         # onButtonHandlers = self.OnListColButton
         # self.buttonpnl = ButtonPanel(panel,onButtonHandlers= onButtonHandlers,size = (-1,100))
-        self.buttonpnl = BT.ButtonPanel(panel, ButtonName= 'List Column', onButtonHandlers= self.OnListColButton)
+        self.buttonpnl = ButtonPanel(panel, ButtonName_1= 'List Column', onButtonHandlers_1= self.OnListColButton)
         box_h = wx.BoxSizer(wx.VERTICAL)
         box_v = wx.BoxSizer(wx.HORIZONTAL)
         box_v.AddSpacer(25)
@@ -134,3 +134,33 @@ class AppFrame(wx.Frame):
 
 #         self.SetSizer( btnPanel_outerVertSzr )
 #         self.Layout()
+class ButtonPanel(wx.Panel):
+
+    def __init__(self,parent = None, id = -1,ButtonName_1 = None, onButtonHandlers_1 = None):
+
+        super(ButtonPanel, self).__init__(parent = parent , id = id)
+        
+        # pub.subscribe(self.OnListen, 'GetSelectCol')
+
+        Button_1 = wx.Button(self,-1,ButtonName_1)
+        # Button_2 = wx.Button(self,-1,ButtonName_2)
+
+        Button_1.Bind(wx.EVT_LEFT_DOWN, onButtonHandlers_1)
+        # Button_2.Bind(wx.EVT_LEFT_DOWN, onButtonHandlers_2)
+
+        btnPanel_innerHorzSzr = wx.BoxSizer( wx.HORIZONTAL )
+        btnPanel_innerHorzSzr.AddStretchSpacer( prop=1 )
+        btnPanel_innerHorzSzr.Add(Button_1)
+        btnPanel_innerHorzSzr.AddSpacer( 25 )
+        # btnPanel_innerHorzSzr.Add(Button_2)
+        # btnPanel_innerHorzSzr.AddSpacer( 25 )
+
+        btnPanel_innerHorzSzr.AddStretchSpacer( prop=1 )
+
+        btnPanel_outerVertSzr = wx.BoxSizer( wx.VERTICAL )
+        btnPanel_outerVertSzr.AddSpacer( 5 )
+        btnPanel_outerVertSzr.Add( btnPanel_innerHorzSzr, flag=wx.EXPAND )
+        btnPanel_outerVertSzr.AddSpacer( 5 )
+
+        self.SetSizer( btnPanel_outerVertSzr )
+        self.Layout()
