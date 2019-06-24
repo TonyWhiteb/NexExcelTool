@@ -59,6 +59,7 @@ class NewListFrame(wx.Frame):
             self.list_ctrl.SetItem(col_no,1,col_name)
             self.list_ctrl.SetItem(col_no,2,filename)
             col_no = col_no + 1
+        self.col_num = col_no
         self.Autosize()
         # file_name = col_dict[0]
         # col_dict = {}
