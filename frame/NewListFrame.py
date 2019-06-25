@@ -36,7 +36,7 @@ class NewListFrame(wx.Frame):
         self.list_ctrl.SetColumnWidth(2,wx.LIST_AUTOSIZE_USEHEADER)
 
         # onButtonHandlers = self.onSelectCol
-        self.buttonpnl = ButtonPanel(panel, ButtonName_1= 'Save Columns', onButtonHandlers_1= self.onSelectCol, ButtonName_2= 'Select ALL', onButtonHandlers_2= self.onSelectAll)
+        self.buttonpnl = ButtonPanel(panel, ButtonName_1= 'Save Columns', onButtonHandlers_1= self.onSelectCol, ButtonName_2= 'Select ALL', onButtonHandlers_2= self.onSelectAll, ButtonName_3= 'Unselect All', onButtonHandlers_3= self.onUnselectAll)
 
         box_h = wx.BoxSizer(wx.HORIZONTAL)
         box_v = wx.BoxSizer(wx.VERTICAL)
@@ -97,11 +97,36 @@ class NewListFrame(wx.Frame):
         for colIndex in range(2):
             self.list_ctrl.SetColumnWidth(colIndex,wx.LIST_AUTOSIZE)
     
+    def onUnselectAll(self,event):
+        for col in range(self.col_num):
+            if self.list_ctrl.IsChecked(col) == True:
+                self.list_ctrl.ToggleItem(col)
+    
     def onSelectAll(self,event):
 
         for col in range(self.col_num):
-
             self.list_ctrl.CheckItem(col)
+        # count = 0
+        # for col in range(self.col_num):
+        #     if self.list_ctrl.IsChecked(col):
+        #         count = count + 1
+        # if count >= 1:
+        #     # self.buttonpnl.Button_2.SetLabel('UnSelect All')
+        #     for col in range(self.col_num):
+        #         self.list_ctrl.OnCheckItem
+
+
+        # for col in range(self.col_num):
+        #     if self.list_ctrl.IsChecked(col):
+        #         self.buttonpnl.Button_2.SetLabel('UnSelect All')
+        #     else:
+        #         self.list_ctrl.CheckItem(col)
+
+        # if self.list_ctrl.IsChecked:
+
+        #     for col in range(self.col_num):
+
+        #         self.list_ctrl.CheckItem(col)
 
     def onSelectCol(self,event):
 
@@ -183,9 +208,18 @@ class ListColCtrl(fc.FileCtrl, listmix.CheckListCtrlMixin, listmix.ListCtrlAutoW
         self.selected = []
         self.selected_id = []
 
-        self.Bind(wx.EVT_CHECKBOX, self.OnCheckItem)
+        self.Bind(wx.EVT_CHECKBOX, self.OnCheck)
+    # def UnSelect(self,index):
 
-    def OnCheckItem(self,index, flag ):
+    #     return self.GetItem(index).GetImage() == 0
+    # #         # self.IsChecked
+    # def UnSelect(self,index, flag ):
+
+    #     if flag == True:
+    #         pass
+    #     else:
+    #         self.IsChecked
+    def OnCheck(self,index, flag ):
 
         if flag == True:
             self.selected.append(self.GetItemText(index))
@@ -200,23 +234,27 @@ class ListColCtrl(fc.FileCtrl, listmix.CheckListCtrlMixin, listmix.ListCtrlAutoW
 
 class ButtonPanel(wx.Panel):
 
-    def __init__(self,parent = None, id = -1,ButtonName_1 = None, onButtonHandlers_1 = None, ButtonName_2 = None, onButtonHandlers_2 = None):
+    def __init__(self,parent = None, id = -1,ButtonName_1 = None, onButtonHandlers_1 = None, ButtonName_2 = None, onButtonHandlers_2 = None, ButtonName_3 = None, onButtonHandlers_3 = None):
 
         super(ButtonPanel, self).__init__(parent = parent , id = id)
         
         # pub.subscribe(self.OnListen, 'GetSelectCol')
 
-        Button_1 = wx.Button(self,-1,ButtonName_1)
-        Button_2 = wx.Button(self,-1,ButtonName_2)
+        self.Button_1 = wx.Button(self,-1,ButtonName_1)
+        self.Button_2 = wx.Button(self,-1,ButtonName_2)
+        self.Button_3 = wx.Button(self,-1,ButtonName_3)
 
-        Button_1.Bind(wx.EVT_LEFT_DOWN, onButtonHandlers_1)
-        Button_2.Bind(wx.EVT_LEFT_DOWN, onButtonHandlers_2)
+        self.Button_1.Bind(wx.EVT_LEFT_DOWN, onButtonHandlers_1)
+        self.Button_2.Bind(wx.EVT_LEFT_DOWN, onButtonHandlers_2)
+        self.Button_3.Bind(wx.EVT_LEFT_DOWN, onButtonHandlers_3)
 
         btnPanel_innerHorzSzr = wx.BoxSizer( wx.HORIZONTAL )
         btnPanel_innerHorzSzr.AddStretchSpacer( prop=1 )
-        btnPanel_innerHorzSzr.Add(Button_1)
+        btnPanel_innerHorzSzr.Add(self.Button_1)
         btnPanel_innerHorzSzr.AddSpacer( 25 )
-        btnPanel_innerHorzSzr.Add(Button_2)
+        btnPanel_innerHorzSzr.Add(self.Button_2)
+        btnPanel_innerHorzSzr.AddSpacer( 25 )
+        btnPanel_innerHorzSzr.Add(self.Button_3)
         btnPanel_innerHorzSzr.AddSpacer( 25 )
 
         btnPanel_innerHorzSzr.AddStretchSpacer( prop=1 )
