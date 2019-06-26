@@ -113,7 +113,7 @@ class NewListFrame(wx.Frame):
         # if count >= 1:
         #     # self.buttonpnl.Button_2.SetLabel('UnSelect All')
         #     for col in range(self.col_num):
-        #         self.list_ctrl.OnCheckItem
+        #         self.list_ctrl.OnCheckItemItem
 
 
         # for col in range(self.col_num):
@@ -133,7 +133,7 @@ class NewListFrame(wx.Frame):
         self.index_select = self.list_ctrl.getSelected_id()
 
         pub.sendMessage( 'GetSelectCol',index = self.index,select_col= self.index_select)
-
+        print(self.index_select)
         self.Close()
         # print(self.GetParent())
 
@@ -197,7 +197,7 @@ class NewListFrame(wx.Frame):
 #         self.SetSizer( btnPanel_outerVertSzr )
 #         self.Layout()
 
-class ListColCtrl(fc.FileCtrl, listmix.CheckListCtrlMixin, listmix.ListCtrlAutoWidthMixin):
+class ListColCtrl(wx.ListCtrl, listmix.CheckListCtrlMixin, listmix.ListCtrlAutoWidthMixin):
 
     def __init__(self, *args, **kwargs):
         wx.ListCtrl.__init__(self,*args,**kwargs)
@@ -208,7 +208,7 @@ class ListColCtrl(fc.FileCtrl, listmix.CheckListCtrlMixin, listmix.ListCtrlAutoW
         self.selected = []
         self.selected_id = []
 
-        self.Bind(wx.EVT_CHECKBOX, self.OnCheck)
+        self.Bind(wx.EVT_CHECKBOX, self.OnCheckItem)
     # def UnSelect(self,index):
 
     #     return self.GetItem(index).GetImage() == 0
@@ -219,7 +219,7 @@ class ListColCtrl(fc.FileCtrl, listmix.CheckListCtrlMixin, listmix.ListCtrlAutoW
     #         pass
     #     else:
     #         self.IsChecked
-    def OnCheck(self,index, flag ):
+    def OnCheckItem(self,index, flag ):
 
         if flag == True:
             self.selected.append(self.GetItemText(index))

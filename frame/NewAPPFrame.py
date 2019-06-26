@@ -1,6 +1,6 @@
 import sys,os
 import wx
-
+import  wx.lib.mixins.listctrl  as  listmix
 from BasicClass import DropTarget as DT
 from BasicClass import FileCtrl as FC
 # from BasicClass import Button as BT
@@ -26,7 +26,7 @@ class AppFrame(wx.Frame):
         panel = wx.Panel(self,-1)
         pub.subscribe(self.OnListen, 'GetSelectCol')
 
-        self.filedropctrl = FC.FileCtrl(panel,size = (550,300),style = wx.LC_REPORT|wx.BORDER_SUNKEN)
+        self.filedropctrl = FrameListCtrl(panel,size = (550,300),style = wx.LC_REPORT|wx.BORDER_SUNKEN)
         self.filedropctrl.InsertColumn(0,'File Path')
         self.filedropctrl.InsertColumn(1,'File Name')
         self.filedropctrl.InsertColumn(2,'File Type')
@@ -42,6 +42,7 @@ class AppFrame(wx.Frame):
         self.filedropctrl.SetColumnWidth(1, wx.LIST_AUTOSIZE)
         self.filedropctrl.SetColumnWidth(2, wx.LIST_AUTOSIZE)
         self.filedropctrl.SetColumnWidth(3, wx.LIST_AUTOSIZE)
+
 
 
 
@@ -109,31 +110,44 @@ class AppFrame(wx.Frame):
         dlg = wx.MessageDialog(self, message, caption, wx.OK | wx.ICON_WARNING)
         dlg.ShowModal()
         dlg.Destroy() 
+        
 
-# class ButtonPanel(wx.Panel):
+class FrameListCtrl(FC.FileCtrl, listmix.CheckListCtrlMixin, listmix.ListCtrlAutoWidthMixin):
 
-#     def __init__(self,parent = None, id = -1, onButtonHandlers = None,size = wx.DefaultSize,style = wx.DEFAULT_FRAME_STYLE):
+    def __init__(self, *args, **kwargs):
+        super(FrameListCtrl, self).__init__(*args,**kwargs)
+        # wx.ListCtrl.__init__(self,*args,**kwargs)
+        listmix.CheckListCtrlMixin.__init__(self)
+        listmix.ListCtrlAutoWidthMixin.__init__(self)
+        # self.setResizeColumn(0)
+        
+        self.selected = []
+        self.selected_id = []
 
-#         super(ButtonPanel, self).__init__(parent = parent , id = id,size = size, style = style)
+        self.Bind(wx.EVT_CHECKBOX, self.OnCheck)
+    # def UnSelect(self,index):
 
-#         listALL = wx.Button(self,-1,'List Columns')
+    #     return self.GetItem(index).GetImage() == 0
+    # #         # self.IsChecked
+    # def UnSelect(self,index, flag ):
 
-#         listALL.Bind(wx.EVT_LEFT_DOWN, onButtonHandlers)
+    #     if flag == True:
+    #         pass
+    #     else:
+    #         self.IsChecked
+    def OnCheck(self,index, flag ):
 
-#         btnPanel_innerHorzSzr = wx.BoxSizer( wx.HORIZONTAL )
-#         btnPanel_innerHorzSzr.AddStretchSpacer( prop=1 )
-#         btnPanel_innerHorzSzr.Add(listALL)
-#         btnPanel_innerHorzSzr.AddSpacer( 25 )
+        if flag == True:
+            self.selected.append(self.GetItemText(index))
+            self.selected_id.append(index)
+        else:
+            self.selected.remove(self.GetItemText(index))
+            self.selected_id.remove(index)
 
-#         btnPanel_innerHorzSzr.AddStretchSpacer( prop=1 )
+    def getSelected_id(self):
+        return  self.selected_id
 
-#         btnPanel_outerVertSzr = wx.BoxSizer( wx.VERTICAL )
-#         btnPanel_outerVertSzr.AddSpacer( 5 )
-#         btnPanel_outerVertSzr.Add( btnPanel_innerHorzSzr, flag=wx.EXPAND )
-#         btnPanel_outerVertSzr.AddSpacer( 5 )
 
-#         self.SetSizer( btnPanel_outerVertSzr )
-#         self.Layout()
 class ButtonPanel(wx.Panel):
 
     def __init__(self,parent = None, id = -1,ButtonName_1 = None, onButtonHandlers_1 = None):
